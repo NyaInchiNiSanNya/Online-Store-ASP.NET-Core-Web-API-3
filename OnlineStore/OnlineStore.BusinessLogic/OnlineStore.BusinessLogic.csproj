@@ -8,15 +8,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OnlineStore.Data\OnlineStore.Data.csproj" />
+    <ProjectReference Include="..\OnlineStore.DTO\OnlineStore.DTO.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="MappingProfiles\" />
     <Folder Include="Validators\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.0" />
   </ItemGroup>
 
 </Project>

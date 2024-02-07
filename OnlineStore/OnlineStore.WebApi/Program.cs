@@ -1,3 +1,8 @@
+using OnlineStore.BusinessLogic.Extensions;
+using OnlineStore.Data.Extensions;
+using OnlineStore.WebApi.ServiceFactory;
+using System.Reflection;
+
 namespace OnlineStore.WebApi
 {
     public class Program
@@ -13,6 +18,12 @@ namespace OnlineStore.WebApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddDbConfiguration(builder.Configuration);
+            builder.Services.AddRepositories();
+            builder.Services.AddServices();
+
+            builder.Services.AddScoped<IServiceFactory, ServiceFactory.ServiceFactory>();
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
