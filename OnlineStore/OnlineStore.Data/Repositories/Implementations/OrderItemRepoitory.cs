@@ -11,8 +11,8 @@ namespace OnlineStore.Data.Repositories.Implementations
 {
     internal class OrderItemRepository : Repository<OrderItem>, IOrderItemRepository
     {
-        public OrderItemRepository(ProductsOrdersContext newsAggregatorContext)
-            : base(newsAggregatorContext)
+        public OrderItemRepository(ProductsOrdersContext productsOrdersContext)
+            : base(productsOrdersContext)
         {
         }
 

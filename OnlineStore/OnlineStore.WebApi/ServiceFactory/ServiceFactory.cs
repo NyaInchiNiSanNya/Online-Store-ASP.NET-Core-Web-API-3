@@ -24,5 +24,11 @@ namespace OnlineStore.WebApi.ServiceFactory
             return _serviceProvider.GetService<ICategoryService>()
                    ?? throw new NullReferenceException(nameof(ICategoryService));
         }
+
+        IProductService IServiceFactory.CreateProductService()
+        {
+            return _serviceProvider.GetService<IProductService>()
+                   ?? throw new NullReferenceException(nameof(IProductService));
+        }
     }
 }

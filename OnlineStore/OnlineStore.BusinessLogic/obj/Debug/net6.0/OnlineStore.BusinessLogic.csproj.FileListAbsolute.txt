@@ -1,0 +1,17 @@
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\bin\Debug\net6.0\OnlineStore.BusinessLogic.deps.json
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\bin\Debug\net6.0\OnlineStore.BusinessLogic.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\bin\Debug\net6.0\OnlineStore.BusinessLogic.pdb
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\bin\Debug\net6.0\OnlineStore.Data.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\bin\Debug\net6.0\OnlineStore.Data.pdb
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\obj\Debug\net6.0\OnlineStore.BusinessLogic.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\obj\Debug\net6.0\OnlineStore.BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\obj\Debug\net6.0\OnlineStore.BusinessLogic.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\obj\Debug\net6.0\OnlineStore.BusinessLogic.AssemblyInfo.cs
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\obj\Debug\net6.0\OnlineStore.BusinessLogic.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\obj\Debug\net6.0\OnlineStore.BusinessLogic.csproj.CopyComplete
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\obj\Debug\net6.0\OnlineStore.BusinessLogic.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\obj\Debug\net6.0\refint\OnlineStore.BusinessLogic.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\obj\Debug\net6.0\OnlineStore.BusinessLogic.pdb
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\obj\Debug\net6.0\ref\OnlineStore.BusinessLogic.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\bin\Debug\net6.0\OnlineStore.DTO.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.BusinessLogic\bin\Debug\net6.0\OnlineStore.DTO.pdb

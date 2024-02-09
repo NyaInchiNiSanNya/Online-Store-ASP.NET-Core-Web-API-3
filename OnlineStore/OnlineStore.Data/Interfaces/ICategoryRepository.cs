@@ -9,5 +9,7 @@ namespace OnlineStore.Data.Interfaces
 {
     public interface ICategoryRepository : IRepository<Сategory>
     {
+        public Task<IEnumerable<Сategory>?> GetCategoriesByPageAsync(Int32 page, Int32 pageSize);
+
     }
 }

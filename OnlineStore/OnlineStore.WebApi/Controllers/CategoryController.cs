@@ -18,6 +18,77 @@ namespace OnlineStore.WebApi.Controllers
             _serviceFactory = serviceFactory ?? throw new NullReferenceException(nameof(serviceFactory));
         }
 
+        [HttpPatch]
+        public async Task<IActionResult> UpdateCategory([FromBody] PatchCategoryRequest request)
+        {
+
+            var newCategory = _serviceFactory.CreateMapperService().Map<CategoryDto>(request);
+
+            Boolean isCategoryUpdated;
+
+            try
+            {
+                isCategoryUpdated = await _serviceFactory
+                    .CreateCategoryService()
+                    .UpdateCategoryAsync(newCategory);
+
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
+
+            if (isCategoryUpdated)
+            {
+                return Ok();
+            }
+
+            return NotFound();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteCategory(Int32 id)
+        {
+            if (id > 0)
+            {
+                var isCategoryDeleted = await _serviceFactory
+                    .CreateCategoryService()
+                    .DeleteCategoryByIdAsync(id);
+
+                if (isCategoryDeleted)
+                {
+                    return Ok();
+                }
+
+                return NotFound();
+            }
+
+
+            return BadRequest();
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateNewCategory([FromBody] CreateNewCategoryRequest request)
+        {
+            var newCategory = _serviceFactory.CreateMapperService().Map<CategoryDto>(request);
+
+            Int32 categoryId;
+            
+            try
+            {
+                categoryId = await _serviceFactory
+                    .CreateCategoryService()
+                    .CreateNewCategoryAsync(newCategory);
+            }
+            catch(InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok(categoryId);
+        }
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetSelectedCategory(Int32 id)
         {
@@ -37,63 +108,5 @@ namespace OnlineStore.WebApi.Controllers
 
             return BadRequest();
         }
-
-        [HttpPatch]
-        public async Task<IActionResult> UpdateCategory([FromBody] PatchCategoryRequest request)
-        {
-
-            var newCategory = _serviceFactory.CreateMapperService().Map<CategoryDto>(request);
-
-            var isCategoryUpdate = await _serviceFactory
-                .CreateCategoryService()
-                .UpdateCategoryAsync(newCategory);
-
-            if (isCategoryUpdate)
-            {
-                return Ok();
-            }
-
-            return NotFound();
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteCategory(Int32 id)
-        {
-            if (id > 0)
-            {
-                var isCategoryDelete = await _serviceFactory
-                    .CreateCategoryService()
-                    .DeleteCategoryByIdAsync(id);
-
-                if (isCategoryDelete)
-                {
-                    return Ok();
-                }
-
-                return NotFound();
-            }
-
-
-            return BadRequest();
-
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateNewCategory([FromBody] CreateNewCategoryRequest request)
-        {
-            var newCategory = _serviceFactory.CreateMapperService().Map<CategoryDto>(request);
-
-            var isCategoryCreate = await _serviceFactory
-                .CreateCategoryService()
-                .CreateNewCategoryAsync(newCategory);
-
-            if (isCategoryCreate)
-            {
-                return Ok();
-            }
-
-            return BadRequest();
-        }
-
     }
 }

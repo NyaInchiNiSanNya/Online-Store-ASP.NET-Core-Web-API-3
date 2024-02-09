@@ -19,9 +19,9 @@ namespace OnlineStore.Data.Repositories.Implementations
         protected readonly ProductsOrdersContext Db;
         protected readonly DbSet<TEntity> DbSet;
 
-        public Repository(ProductsOrdersContext userArticleContext)
+        public Repository(ProductsOrdersContext productsOrdersContext)
         {
-            Db = userArticleContext;
+            Db = productsOrdersContext;
             DbSet = Db.Set<TEntity>();
         }
 

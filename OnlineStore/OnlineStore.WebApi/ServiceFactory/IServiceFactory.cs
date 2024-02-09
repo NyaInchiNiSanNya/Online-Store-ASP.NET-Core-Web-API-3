@@ -7,5 +7,6 @@ namespace OnlineStore.WebApi.ServiceFactory
     {
         IMapper CreateMapperService();
         ICategoryService CreateCategoryService();
+        IProductService CreateProductService();
     }
 }

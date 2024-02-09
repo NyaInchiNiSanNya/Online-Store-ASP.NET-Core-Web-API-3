@@ -23,6 +23,7 @@ namespace OnlineStore.WebApi.MappingProfiles
                             article
                                 => article.newName));
 
+
         }
     }
 }
