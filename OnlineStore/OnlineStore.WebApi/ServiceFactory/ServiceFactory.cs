@@ -30,5 +30,17 @@ namespace OnlineStore.WebApi.ServiceFactory
             return _serviceProvider.GetService<IProductService>()
                    ?? throw new NullReferenceException(nameof(IProductService));
         }
+
+        IIdentityService IServiceFactory.CreateIdentityService()
+        {
+            return _serviceProvider.GetService<IIdentityService>()
+                   ?? throw new NullReferenceException(nameof(IIdentityService));
+        }
+
+        IJwtService IServiceFactory.CreateJwtService()
+        {
+            return _serviceProvider.GetService<IJwtService>()
+                   ?? throw new NullReferenceException(nameof(IJwtService));
+        }
     }
 }

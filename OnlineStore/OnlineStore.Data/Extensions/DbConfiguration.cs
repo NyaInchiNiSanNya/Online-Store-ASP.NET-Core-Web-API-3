@@ -29,7 +29,6 @@ namespace OnlineStore.Data.Extensions
             services.AddIdentityCore<User>()
                 .AddRoles<Role>()
                 .AddEntityFrameworkStores<ProductsOrdersContext>();
-
             return services;
         }
     }

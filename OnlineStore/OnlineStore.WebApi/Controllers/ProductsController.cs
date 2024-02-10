@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineStore.BusinessLogic.Models.Requests;
 using OnlineStore.BusinessLogic.Models.Responses;
 using OnlineStore.DTO.DTO;
@@ -18,6 +19,7 @@ namespace OnlineStore.WebApi.Controllers
                               ?? throw new NullReferenceException(nameof(serviceFactory));
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet]
         public async Task<IActionResult> GetProductsByPage([FromQuery] GetProductsByPageRequest request)
         {
@@ -32,6 +34,7 @@ namespace OnlineStore.WebApi.Controllers
 
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet("{categoryId:int}")]
         public async Task<IActionResult> GetProductsByCategory(Int32 categoryId)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineStore.BusinessLogic.Models.Requests;
 using OnlineStore.BusinessLogic.Models.Responses;
 using OnlineStore.DTO.DTO;
@@ -17,6 +18,7 @@ namespace OnlineStore.WebApi.Controllers
             _serviceFactory = serviceFactory ?? throw new NullReferenceException(nameof(serviceFactory));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPatch]
         public async Task<IActionResult> UpdateProduct([FromBody] PatchProductRequest request)
         {
@@ -35,6 +37,7 @@ namespace OnlineStore.WebApi.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteProduct(Int32 id)
         {
@@ -57,6 +60,7 @@ namespace OnlineStore.WebApi.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateNewProduct([FromBody] CreateNewProductRequest request)
         {
@@ -78,6 +82,7 @@ namespace OnlineStore.WebApi.Controllers
             return Ok(productId);
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetSelectedCategory(Int32 id)
         {

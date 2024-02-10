@@ -8,5 +8,7 @@ namespace OnlineStore.WebApi.ServiceFactory
         IMapper CreateMapperService();
         ICategoryService CreateCategoryService();
         IProductService CreateProductService();
+        IIdentityService CreateIdentityService();
+        IJwtService CreateJwtService();
     }
 }

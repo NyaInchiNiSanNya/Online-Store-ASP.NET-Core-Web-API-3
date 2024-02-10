@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineStore.BusinessLogic.Models.Requests;
 using OnlineStore.BusinessLogic.Models.Responses;
 using OnlineStore.DTO.DTO;
@@ -19,6 +20,7 @@ namespace OnlineStore.WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetCategoriesByPage([FromQuery] GetCategoriesByPageRequest request)
         {
 

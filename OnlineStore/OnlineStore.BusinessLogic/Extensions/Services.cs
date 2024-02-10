@@ -18,6 +18,9 @@ namespace OnlineStore.BusinessLogic.Extensions
         {
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
