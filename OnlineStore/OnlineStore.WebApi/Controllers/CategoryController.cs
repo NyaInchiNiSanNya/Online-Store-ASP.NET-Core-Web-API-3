@@ -19,78 +19,78 @@ namespace OnlineStore.WebApi.Controllers
             _serviceFactory = serviceFactory ?? throw new NullReferenceException(nameof(serviceFactory));
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPatch]
         public async Task<IActionResult> UpdateCategory([FromBody] PatchCategoryRequest request)
         {
 
             var newCategory = _serviceFactory.CreateMapperService().Map<CategoryDto>(request);
 
-            Boolean isCategoryUpdated;
-
             try
             {
-                isCategoryUpdated = await _serviceFactory
+                await _serviceFactory
                     .CreateCategoryService()
-                    .UpdateCategoryAsync(newCategory);
+                    .UpdateCategoryAsync(newCategory, CancellationToken.None);
 
             }
             catch (ArgumentException)
             {
                 return BadRequest();
             }
-
-            if (isCategoryUpdated)
+            catch (InvalidOperationException)
             {
-                return Ok();
+                return NotFound();
             }
 
-            return NotFound();
+            return Ok();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteCategory(Int32 id)
         {
             if (id > 0)
             {
-                var isCategoryDeleted = await _serviceFactory
-                    .CreateCategoryService()
-                    .DeleteCategoryByIdAsync(id);
-
-                if (isCategoryDeleted)
+                try
                 {
-                    return Ok();
+                    await _serviceFactory
+                        .CreateCategoryService()
+                        .DeleteCategoryByIdAsync(id, CancellationToken.None);
+                }
+                catch (ArgumentException)
+                {
+                    return BadRequest();
+                }
+                catch (InvalidOperationException)
+                {
+                    return NotFound();
                 }
 
-                return NotFound();
             }
 
+            return Ok();
 
-            return BadRequest();
 
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateNewCategory([FromBody] CreateNewCategoryRequest request)
         {
             var newCategory = _serviceFactory.CreateMapperService().Map<CategoryDto>(request);
-
-            Int32 categoryId;
             
             try
             {
-                categoryId = await _serviceFactory
+                await _serviceFactory
                     .CreateCategoryService()
-                    .CreateNewCategoryAsync(newCategory);
+                    .CreateNewCategoryAsync(newCategory, CancellationToken.None);
             }
-            catch(InvalidOperationException e)
+            catch(InvalidOperationException)
             {
-                return BadRequest(e.Message);
+                return BadRequest("category already exist");
             }
 
-            return Ok(categoryId);
+            return Ok();
         }
 
         [HttpGet("{id:int}")]
@@ -98,16 +98,18 @@ namespace OnlineStore.WebApi.Controllers
         {
             if (id > 0)
             {
-                CategoryDto? categoryDto = await _serviceFactory
-                    .CreateCategoryService()
-                    .GetCategoryByIdAsync(id);
+                try
+                {
+                    CategoryDto? categoryDto = await _serviceFactory
+                        .CreateCategoryService()
+                        .GetCategoryByIdAsync(id, CancellationToken.None);
 
-                if (categoryDto == null)
+                    return Ok(_serviceFactory.CreateMapperService().Map<GetCategoryByIdResponse>(categoryDto));
+                }
+                catch (InvalidOperationException)
                 {
                     return NotFound();
                 }
-
-                return Ok(_serviceFactory.CreateMapperService().Map<GetCategoryByIdResponse>(categoryDto));
             }
 
             return BadRequest();

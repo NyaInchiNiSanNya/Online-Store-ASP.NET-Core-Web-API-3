@@ -10,10 +10,9 @@ namespace OnlineStore.Data.Entities
 {
     public class OrderItem : IBaseEntity
     {
-        [Key]
         public Int32 Id { get; set; }
         public Int32 Count { get; set; }
-        public Decimal TotalPrice { get; set; }
+        public Int32 ProductId { get; set; }
         public Product Product { get; set; }
         public Int32 OrderId { get; set; }
         public Order Order { get; set; }

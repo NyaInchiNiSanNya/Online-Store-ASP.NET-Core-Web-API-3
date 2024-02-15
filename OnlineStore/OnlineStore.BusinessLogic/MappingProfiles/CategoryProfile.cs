@@ -6,15 +6,16 @@ using OnlineStore.DTO.DTO;
 
 namespace OnlineStore.WebApi.MappingProfiles
 {
-    public class CategoryDtoProfile : Profile
+    public class CategoryProfile : Profile
     {
-        public CategoryDtoProfile()
+        public CategoryProfile()
         {
             SourceMemberNamingConvention = LowerUnderscoreNamingConvention.Instance;
             DestinationMemberNamingConvention = PascalCaseNamingConvention.Instance;
 
         CreateMap<CategoryDto, CreateNewCategoryRequest>().ReverseMap();
         CreateMap<CategoryDto, Сategory>().ReverseMap();
+        CreateMap<CategoriesPaginationDto, GetCategoriesByPageRequest>().ReverseMap();
             CreateMap<CategoryDto, GetCategoryByIdResponse>().ReverseMap();
             CreateMap<PatchCategoryRequest, CategoryDto>().
                 ForMember(dto => dto.Name,

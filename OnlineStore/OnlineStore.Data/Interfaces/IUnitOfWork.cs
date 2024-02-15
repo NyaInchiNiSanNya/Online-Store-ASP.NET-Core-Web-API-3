@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OnlineStore.Data.Interfaces
@@ -14,6 +15,6 @@ namespace OnlineStore.Data.Interfaces
         public IOrderItemRepository OrderItems { get; }
         public IOrderRepository Orders { get; }
         public IProductRepository Products { get; }
-        public Task<int> SaveChangesAsync();
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

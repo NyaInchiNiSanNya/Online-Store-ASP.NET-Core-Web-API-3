@@ -18,23 +18,19 @@ namespace OnlineStore.WebApi.Controllers
             _serviceFactory = serviceFactory 
                               ?? throw new NullReferenceException(nameof(serviceFactory));
         }
-
-        [Authorize(Roles = "User")]
         [HttpGet]
         public async Task<IActionResult> GetProductsByPage([FromQuery] GetProductsByPageRequest request)
         {
-
-            //if (IsValid)
+            var productsByPageDto = _serviceFactory.CreateMapperService().Map<ProductsPaginationDto>(request);
 
             var productsList = await _serviceFactory
                 .CreateProductService()
-                .GetProductsByPageAsync(request.Page, request.PageSize);
+                .GetProductsByPageAsync(productsByPageDto, CancellationToken.None);
 
             return Ok(productsList);
 
         }
 
-        [Authorize(Roles = "User")]
         [HttpGet("{categoryId:int}")]
         public async Task<IActionResult> GetProductsByCategory(Int32 categoryId)
         {
@@ -44,7 +40,7 @@ namespace OnlineStore.WebApi.Controllers
             }
 
             var productsByCategory = await _serviceFactory.CreateProductService()
-                .GetProductsByCategoryAsync(categoryId);
+                .GetProductsByCategoryAsync(categoryId, CancellationToken.None);
 
             return Ok(productsByCategory);
         }

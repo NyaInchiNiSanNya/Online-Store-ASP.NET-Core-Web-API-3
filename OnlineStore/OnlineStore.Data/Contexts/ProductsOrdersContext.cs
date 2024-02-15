@@ -6,7 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using OnlineStore.Data.Contexts.Configuration;
+using OnlineStore.Data.Contexts.EntitiesConfiguration;
 using OnlineStore.Data.Entities;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -29,9 +29,7 @@ namespace OnlineStore.Data.Contexts
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProductConfiguration).Assembly);
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultSchema("pub");

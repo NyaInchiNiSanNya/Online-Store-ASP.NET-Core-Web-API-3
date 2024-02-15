@@ -22,15 +22,13 @@ namespace OnlineStore.WebApi.Controllers
         [Route("registration")]
         public async Task<IActionResult> Registration([FromBody] RegistrationRequest registrationRequest)
         {
-            //valid
-
             try
             {
                 await _serviceFactory
                         .CreateIdentityService()
                         .RegistrationAsync(_serviceFactory
                             .CreateMapperService()
-                            .Map<UserRegistrationDto>(registrationRequest)!);
+                            .Map<UserRegistrationDto>(registrationRequest)!, CancellationToken.None);
 
             }
             catch (InvalidOperationException ex)
@@ -46,23 +44,25 @@ namespace OnlineStore.WebApi.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
+            try
+            {
 
-            if (await _serviceFactory
+                await _serviceFactory
                     .CreateIdentityService()
                     .LoginAsync(_serviceFactory
                         .CreateMapperService()
-                        .Map<UserLoginDto>(loginRequest)))
-            {
-
-                var claims = await _serviceFactory.CreateIdentityService()
-                    .GetUserClaimsAsync(loginRequest.Email);
-
-                var jwtToken = await _serviceFactory.CreateJwtService().GetJwtTokenString(claims);
+                        .Map<UserLoginDto>(loginRequest)!, CancellationToken.None);
                 
+                var claims = await _serviceFactory.CreateIdentityService()
+                    .GetUserClaimsAsync(loginRequest.Email, CancellationToken.None);
+
+                var jwtToken = await _serviceFactory.CreateJwtService()
+                    .GetJwtTokenStringAsync(claims, CancellationToken.None);
+
                 return Ok(jwtToken);
 
             }
-            else
+            catch (InvalidOperationException)
             {
                 return BadRequest("Invalid email or password");
             }

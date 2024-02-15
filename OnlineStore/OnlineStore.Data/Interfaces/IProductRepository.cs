@@ -9,10 +9,13 @@ namespace OnlineStore.Data.Interfaces
 {
     public interface IProductRepository : IRepository<Product>
     {
-        public Task<IEnumerable<Product>?> GetProductsByPageAsync(Int32 page, Int32 pageSize);
+        public Task<IEnumerable<Product>?> GetProductsByPageAsync(Int32 page, Int32 pageSize
+            , CancellationToken cancellationToken);
 
-        public Task<IEnumerable<Product>?> GetProductsByCategoryIdAsync(Int32 categoryId);
+        public Task<IEnumerable<Product>?> GetProductsByCategoryIdAsync(Int32 categoryId
+            , CancellationToken cancellationToken);
 
-        public Task AddCategoriesToProductAsync(Int32 productId, ICollection<Int32> categoriesId);
+        public Task AddCategoriesToProductAsync(Int32 productId, ICollection<Int32> categoriesId
+            , CancellationToken cancellationToken);
     }
 }

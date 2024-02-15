@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using OnlineStore.BusinessLogic.Interfaces;
 using OnlineStore.BusinessLogic.Services;
 using System.Reflection;
+using FluentValidation;
+using OnlineStore.BusinessLogic.Validators;
+using OnlineStore.BusinessLogic.Models.ConfigurationModels;
 
 namespace OnlineStore.BusinessLogic.Extensions
 {
@@ -23,6 +26,7 @@ namespace OnlineStore.BusinessLogic.Extensions
             services.AddScoped<IRoleService, RoleService>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssemblyContaining<LoginValidator>();
 
             return services;
         }

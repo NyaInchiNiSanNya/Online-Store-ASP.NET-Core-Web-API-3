@@ -1,18 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OnlineStore.Data.Entities;
 
-namespace OnlineStore.Data.Contexts.Configuration
+namespace OnlineStore.Data.Contexts.EntitiesConfiguration
 {
     public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
+            builder.HasKey(p => p.Id);
+
             builder
                 .HasMany(x => x.OrderItems)
                 .WithOne(x => x.Order)

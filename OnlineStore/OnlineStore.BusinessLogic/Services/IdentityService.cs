@@ -11,6 +11,7 @@ using OnlineStore.DTO.DTO;
 using Microsoft.AspNetCore.Identity;
 using OnlineStore.Data.Entities;
 using System.Data;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace OnlineStore.BusinessLogic.Services
 {
@@ -27,7 +28,7 @@ namespace OnlineStore.BusinessLogic.Services
         }
 
 
-        public async Task<Boolean> RegistrationAsync(UserRegistrationDto model)
+        public async Task<Boolean> RegistrationAsync(UserRegistrationDto model, CancellationToken cancellationToken)
         {
             var isUserExistByEmail = await _userManager.FindByEmailAsync(model.Email);
 
@@ -36,13 +37,14 @@ namespace OnlineStore.BusinessLogic.Services
                 throw new InvalidOperationException("User with this email already exist.");
             }
 
-            User newUser = new User { Email = model.Email, UserName = model.Name };
+            var newUser = new User { Email = model.Email, UserName = model.Name };
 
             var result = await _userManager.CreateAsync(newUser, model.Password);
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(newUser, await _roleService.GetDefaultRoleAsync());
+                await _userManager.AddToRoleAsync(newUser, await _roleService
+                    .GetDefaultRoleAsync(cancellationToken: cancellationToken));
                 
                 return true;
             }
@@ -52,26 +54,29 @@ namespace OnlineStore.BusinessLogic.Services
             throw new InvalidOperationException(String.Join(", ", errors));
         }
 
-        public async Task<Boolean> LoginAsync(UserLoginDto model)
+        public async Task LoginAsync(UserLoginDto userLogin, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(userLogin.Email);
 
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            if (user != null )
             {
-                return true;
+                throw new InvalidOperationException($"User {userLogin.Email} not found");
             }
 
-            return false;
+            if (await _userManager.CheckPasswordAsync(user, userLogin.Password))
+            {
+                throw new InvalidOperationException($"password verification failed: {userLogin.Email}");
+            }
         }
 
-        public async Task<List<Claim>> GetUserClaimsAsync(String email)
+        public async Task<List<Claim>> GetUserClaimsAsync(String email, CancellationToken cancellationToken)
         {
             if (String.IsNullOrEmpty(email))
             {
                 throw new ArgumentNullException(nameof(email));
             }
 
-            User? user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
             {

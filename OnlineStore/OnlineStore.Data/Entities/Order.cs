@@ -10,7 +10,6 @@ namespace OnlineStore.Data.Entities
 {
     public class Order : IBaseEntity
     {
-        [Key]
         public Int32 Id { get; set; }
         public String UserId { get; set; }
         public User User { get; set; }

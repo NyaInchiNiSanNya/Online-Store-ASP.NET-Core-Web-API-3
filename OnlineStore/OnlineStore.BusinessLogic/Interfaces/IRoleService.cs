@@ -8,8 +8,8 @@ namespace OnlineStore.BusinessLogic.Interfaces
 {
     public interface IRoleService
     {
-        public Task InitiateDefaultRolesAsync();
+        public Task InitiateDefaultRolesAsync(CancellationToken cancellationToken);
 
-        public Task<String> GetDefaultRoleAsync();
+        public Task<String> GetDefaultRoleAsync(CancellationToken cancellationToken);
     }
 }

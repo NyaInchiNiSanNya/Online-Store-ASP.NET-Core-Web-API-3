@@ -28,82 +28,78 @@ namespace OnlineStore.BusinessLogic.Services
 
         }
 
-        public async Task<ProductDto?> GetProductByIdAsync(Int32 productId)
+        public async Task<ProductDto?> GetProductByIdAsync(Int32 productId, CancellationToken cancellationToken)
         {
             if (productId < 1)
             {
                 throw new ArgumentException(nameof(productId));
             }
 
-            var product = await _unitOfWork.Products.GetByIdAsync(productId);
+            var product = await _unitOfWork.Products.GetByIdAsync(productId, cancellationToken);
+
+            if (product == null)
+            {
+                throw new InvalidOperationException($"Product {productId} not found");
+            }
 
             return _mapper.Map<ProductDto>(product);
         }
 
-        public async Task<Boolean> DeleteProductByIdAsync(Int32 productId)
+        public async Task DeleteProductByIdAsync(Int32 productId, CancellationToken cancellationToken)
         {
             if (productId < 1)
             {
                 throw new ArgumentException(nameof(productId));
             }
 
-            var product = await _unitOfWork.Products.GetByIdAsync(productId);
+            var product = await _unitOfWork.Products.GetByIdAsync(productId, cancellationToken);
 
             if (product == null)
             {
-                return false;
+                throw new InvalidOperationException($"Product {productId} not found");
             }
 
-            await _unitOfWork.Products.Remove(productId);
+            await _unitOfWork.Products.RemoveAsync(productId, cancellationToken);
 
-            await _unitOfWork.SaveChangesAsync();
-
-            return true;
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Int32> CreateNewProductAsync(ProductDto newProduct)
+        public async Task CreateNewProductAsync(ProductDto newProduct, CancellationToken cancellationToken)
         {
             var product = await _unitOfWork.Products
                 .FindBy(x => x.Name.Equals(newProduct.Name))
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
             if (product != null)
             {
                 throw new InvalidOperationException($"Product {newProduct.Name} already exist");
             }
 
-
             var newProductToCreate = _mapper.Map<Product>(newProduct);
 
 
-            await _unitOfWork.Products.AddAsync(newProductToCreate);
+            await _unitOfWork.Products.AddAsync(newProductToCreate, cancellationToken);
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             var createdProduct = await _unitOfWork.Products
                 .FindBy(x => x.Name.Equals(newProduct.Name))
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
-            if (newProduct.CategoriesId != null && newProduct.CategoriesId.Any())
-            {
-                await _unitOfWork.Products.AddCategoriesToProductAsync(createdProduct.Id, newProduct.CategoriesId);
-            }
-
-            return createdProduct!.Id;
         }
 
-        public async Task<Boolean> UpdateProductAsync(ProductDto newProducts)
+        public async Task UpdateProductAsync(ProductDto newProducts, CancellationToken cancellationToken)
         {
             if (newProducts.Id < 1)
             {
                 throw new ArgumentException(nameof(newProducts));
             }
 
-            var product = await _unitOfWork.Products.GetByIdAsync(newProducts.Id);
+            var product = await _unitOfWork.Products.GetByIdAsync(newProducts.Id, cancellationToken);
 
             if (product == null)
             {
-                return false;
+                throw new InvalidOperationException($"Product {newProducts.Id} not found");
             }
 
             var patchDtos = new List<Patch> {
@@ -113,44 +109,41 @@ namespace OnlineStore.BusinessLogic.Services
                 new Patch { PropertyName = "Price", PropertyValue = newProducts.Price }
             };
 
-            await _unitOfWork.Products.PatchAsync(newProducts.Id, patchDtos);
+            await _unitOfWork.Products.PatchAsync(newProducts.Id, patchDtos, cancellationToken);
 
-            await _unitOfWork.SaveChangesAsync();
-
-            return true;
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<ProductDto>?> GetProductsByPageAsync(Int32 page, Int32 pageSize)
+        public async Task<IEnumerable<ProductDto>?> GetProductsByPageAsync(ProductsPaginationDto paginationDto
+            , CancellationToken cancellationToken)
         {
-            if (page <= 0 || pageSize <= 0)
-            {
-                throw new ArgumentException($"attempt to use incorrect pagination arguments");
-            }
-
             var products = await _unitOfWork.Products
-                .GetProductsByPageAsync(page, pageSize); ;
+                .GetProductsByPageAsync(paginationDto.Page, paginationDto.PageSize, cancellationToken); 
 
             var productsDtoList = _mapper.Map<List<ProductDto>>(products);
 
             return productsDtoList;
         }
 
-        public async Task<IEnumerable<ProductDto>?> GetProductsByCategoryAsync(Int32 categoryId)
+        public async Task<IEnumerable<ProductDto>?> GetProductsByCategoryAsync(Int32 categoryId
+            , CancellationToken cancellationToken)
         {
 
             if (categoryId >= 1)
             {
-                var category = await _categoryService.GetCategoryByIdAsync(categoryId);
+                var category = await _categoryService.GetCategoryByIdAsync(categoryId, cancellationToken);
 
                 if (category != null)
                 {
-                    var products = await _unitOfWork.Products.GetProductsByCategoryIdAsync(categoryId);
+                    var products = await _unitOfWork.Products
+                        .GetProductsByCategoryIdAsync(categoryId, cancellationToken);
 
                     var productsDto = _mapper.Map<List<ProductDto>>(products);
 
                     return productsDto;
                 }
             }
+
             return null;
         }
     }

@@ -9,6 +9,6 @@ namespace OnlineStore.BusinessLogic.Interfaces
 {
     public interface IJwtService
     {
-        public Task<String> GetJwtTokenString(List<Claim> user);
+        public Task<String> GetJwtTokenStringAsync(List<Claim> user, CancellationToken cancellationToken);
     }
 }

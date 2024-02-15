@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace OnlineStore.BusinessLogic.MappingProfiles
 {
-    public class ProductDtoProfile : Profile
+    public class ProductProfile : Profile
     {
-        public ProductDtoProfile()
+        public ProductProfile()
         {
             SourceMemberNamingConvention = LowerUnderscoreNamingConvention.Instance;
             DestinationMemberNamingConvention = PascalCaseNamingConvention.Instance;
@@ -21,6 +21,7 @@ namespace OnlineStore.BusinessLogic.MappingProfiles
             CreateMap<ProductDto, CreateNewProductRequest>().ReverseMap();
             CreateMap<ProductDto, GetProductByIdResponse>().ReverseMap();
             CreateMap<ProductDto, Product>().ReverseMap();
+            CreateMap<ProductsPaginationDto, GetProductsByPageRequest>().ReverseMap();
             CreateMap<PatchProductRequest, ProductDto>().
                 ForMember(dto => dto.Name,
                     opt

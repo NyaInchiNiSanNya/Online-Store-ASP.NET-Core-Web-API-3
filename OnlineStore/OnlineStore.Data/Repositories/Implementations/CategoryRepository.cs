@@ -18,14 +18,15 @@ namespace OnlineStore.Data.Repositories.Implementations
             
         }
 
-        public async Task<IEnumerable<Сategory>?> GetCategoriesByPageAsync(Int32 page, Int32 pageSize)
+        public async Task<IEnumerable<Сategory>?> GetCategoriesByPageAsync(Int32 page, Int32 pageSize
+            , CancellationToken cancellationToken)
         {
             var categories = await DbSet
                 .AsNoTracking()
                 .OrderByDescending(x => x.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken: cancellationToken);
 
             return categories;
         }

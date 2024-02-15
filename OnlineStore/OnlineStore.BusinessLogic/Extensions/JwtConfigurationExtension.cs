@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using OnlineStore.BusinessLogic.Models.ConfigurationModels;
 
 namespace OnlineStore.BusinessLogic.Extensions
 {
@@ -31,6 +32,9 @@ namespace OnlineStore.BusinessLogic.Extensions
                             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecurityKey"])),
                     };
                 });
+            
+            builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
+
             return builder;
         }
     }

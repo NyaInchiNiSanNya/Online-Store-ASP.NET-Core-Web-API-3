@@ -20,15 +20,13 @@ namespace OnlineStore.WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetCategoriesByPage([FromQuery] GetCategoriesByPageRequest request)
         {
-
-            //if (IsValid)
-
+            var categoriesPagination = _serviceFactory.CreateMapperService().Map<CategoriesPaginationDto>(request);
+            
             var categoriesList = await _serviceFactory
                 .CreateCategoryService()
-                .GetCategoriesByPageAsync(request.Page, request.PageSize);
+                .GetCategoriesByPageAsync(categoriesPagination, CancellationToken.None);
 
             return Ok(categoriesList);
 

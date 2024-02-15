@@ -11,9 +11,8 @@ namespace OnlineStore.Data.Entities
 {
     public class Сategory : IBaseEntity
     {
-        [Key]
+        
         public Int32 Id { get; set; }
-        [Required]
         public String Name { get; set; }
         public ICollection<Product>? Products { get; set; }
     }

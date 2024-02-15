@@ -40,9 +40,9 @@ namespace OnlineStore.Data.Repositories
         public IProductRepository Products => _productRepository;
 
         
-        public async Task<int> SaveChangesAsync()
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public void Dispose()

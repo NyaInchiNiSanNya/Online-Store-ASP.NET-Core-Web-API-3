@@ -24,9 +24,9 @@ namespace OnlineStore.BusinessLogic.Services
             _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         }
         
-        public async Task InitiateDefaultRolesAsync()
+        public async Task InitiateDefaultRolesAsync(CancellationToken cancellationToken)
         {
-            String? rolesFromConfig = _configuration["Roles:all"];
+            var rolesFromConfig = _configuration["Roles:all"];
 
             if (String.IsNullOrEmpty(rolesFromConfig))
             {
@@ -37,7 +37,8 @@ namespace OnlineStore.BusinessLogic.Services
 
             foreach (var role in roles)
             {
-                if (!await _roleManager.Roles.AnyAsync(r => r.Name.Equals(role)))
+                if (!await _roleManager.Roles
+                        .AnyAsync(r => r.Name.Equals(role), cancellationToken: cancellationToken))
                 {
                     var newRole = new Role { Name = role };
 
@@ -47,22 +48,24 @@ namespace OnlineStore.BusinessLogic.Services
             }
         }
 
-        public async Task<String> GetDefaultRoleAsync()
+        public async Task<String> GetDefaultRoleAsync(CancellationToken cancellationToken)
         {
-            String? defaultRoleFromConfigFile = _configuration["Roles:default"];
+            var defaultRoleFromConfigFile = _configuration["Roles:default"];
 
             if (String.IsNullOrEmpty(defaultRoleFromConfigFile))
             {
                 throw new ArgumentException("No default role is defined in the configuration file");
             }
 
-            var isRoleExist = await _roleManager.Roles.AnyAsync(r => r.Name.Equals(defaultRoleFromConfigFile));
+            var isRoleExist = await _roleManager.Roles.AnyAsync(r => r.Name.Equals(defaultRoleFromConfigFile)
+                , cancellationToken: cancellationToken);
 
             if (!isRoleExist)
             {
-                await InitiateDefaultRolesAsync();
+                await InitiateDefaultRolesAsync(cancellationToken: cancellationToken);
 
-                isRoleExist = await _roleManager.Roles.AnyAsync(r => r.Name.Equals(defaultRoleFromConfigFile));
+                isRoleExist = await _roleManager.Roles.AnyAsync(r => r.Name.Equals(defaultRoleFromConfigFile)
+                    , cancellationToken: cancellationToken);
 
             }
 

@@ -24,44 +24,48 @@ namespace OnlineStore.BusinessLogic.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
-        public async Task<CategoryDto?> GetCategoryByIdAsync(Int32 categoryId)
+        public async Task<CategoryDto?> GetCategoryByIdAsync(Int32 categoryId, CancellationToken cancellationToken)
         {
             if (categoryId < 1)
             {
                 throw new ArgumentException(nameof(categoryId));
             }
 
-            var category = await _unitOfWork.Categories.GetByIdAsync(categoryId);
+            var category = await _unitOfWork.Categories.GetByIdAsync(categoryId, cancellationToken);
+
+            if (category == null)
+            {
+                throw new InvalidOperationException($"Category {categoryId} not found");
+            }
 
             return _mapper.Map<CategoryDto>(category);
         }
 
-        public async Task<Boolean> DeleteCategoryByIdAsync(Int32 categoryId)
+        public async Task DeleteCategoryByIdAsync(Int32 categoryId, CancellationToken cancellationToken)
         {
             if (categoryId < 1)
             {
                 throw new ArgumentException(nameof(categoryId));
             }
 
-            var category = await _unitOfWork.Categories.GetByIdAsync(categoryId);
+            var category = await _unitOfWork.Categories.GetByIdAsync(categoryId, cancellationToken);
 
             if (category == null)
             {
-                return false;
+                throw new InvalidOperationException($"Category {categoryId} not found");
             }
 
-            await _unitOfWork.Categories.Remove(categoryId);
+            await _unitOfWork.Categories.RemoveAsync(categoryId, cancellationToken);
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return true;
         }
 
-        public async Task<Int32> CreateNewCategoryAsync(CategoryDto newCategory)
+        public async Task CreateNewCategoryAsync(CategoryDto newCategory, CancellationToken cancellationToken)
         {
             var category= await _unitOfWork.Categories
                 .FindBy(x => x.Name.Equals(newCategory.Name))
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
             if (category != null)
             {
@@ -70,57 +74,45 @@ namespace OnlineStore.BusinessLogic.Services
 
             var newCategoryToCreate = _mapper.Map<Сategory>(newCategory);
 
-            await _unitOfWork.Categories.AddAsync(newCategoryToCreate);
+            await _unitOfWork.Categories.AddAsync(newCategoryToCreate, cancellationToken);
 
-            await _unitOfWork.SaveChangesAsync();
-
-            var createdCategory = await _unitOfWork.Categories
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            
+            await _unitOfWork.Categories
                 .FindBy(x => x.Name.Equals(newCategory.Name))
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
-            if (createdCategory == null)
-            {
-                throw new InvalidOperationException("Can't create new category");
-            }
-
-            return createdCategory.Id;
         }
 
-        public async Task<Boolean> UpdateCategoryAsync(CategoryDto newCategory)
+        public async Task UpdateCategoryAsync(CategoryDto newCategory, CancellationToken cancellationToken)
         {
             if (newCategory.Id < 1)
             {
                 throw new ArgumentException(nameof(newCategory));
             }
 
-            var category = await _unitOfWork.Categories.GetByIdAsync(newCategory.Id);
+            var category = await _unitOfWork.Categories.GetByIdAsync(newCategory.Id, cancellationToken);
 
             if (category == null)
             {
-                return false;
+                throw new InvalidOperationException($"Category {newCategory.Id} not found");
             }
 
-            var patchDtos = new List<Patch> {
+            var patchDto = new List<Patch> {
 
                     new Patch { PropertyName = "Name", PropertyValue = newCategory.Name },
                 };
 
-            await _unitOfWork.Categories.PatchAsync(newCategory.Id, patchDtos);
+            await _unitOfWork.Categories.PatchAsync(newCategory.Id, patchDto, cancellationToken);
 
-            await _unitOfWork.SaveChangesAsync();
-
-            return true;
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<CategoryDto>?> GetCategoriesByPageAsync(Int32 page, Int32 pageSize)
+        public async Task<IEnumerable<CategoryDto>?> GetCategoriesByPageAsync(CategoriesPaginationDto paginationDto
+            , CancellationToken cancellationToken)
         {
-            if (page <= 0 || pageSize <= 0)
-            {
-                throw new ArgumentException($"attempt to use incorrect pagination arguments");
-            }
-
             var categories = await _unitOfWork.Categories
-                .GetCategoriesByPageAsync(page, pageSize); ;
+                .GetCategoriesByPageAsync(paginationDto.Page, paginationDto.PageSize, cancellationToken); 
 
             var categoriesDtoList = _mapper.Map<List<CategoryDto>>(categories);
 

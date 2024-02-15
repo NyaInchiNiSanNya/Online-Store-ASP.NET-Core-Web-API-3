@@ -11,9 +11,7 @@ namespace OnlineStore.Data.Entities
 {
     public class Product : IBaseEntity
     {
-        [Key]
         public Int32 Id { get; set; }
-        [Required]
         public String Name { get; set; }
         public String? Description { get; set; }
         public Decimal Price { get; set; }

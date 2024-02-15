@@ -12,10 +12,10 @@ namespace OnlineStore.BusinessLogic.Interfaces
     public interface IIdentityService
     {
         public Task<Boolean> RegistrationAsync
-            (UserRegistrationDto model);
+            (UserRegistrationDto model, CancellationToken cancellationToken);
 
-        public Task<Boolean> LoginAsync(UserLoginDto model);
+        public Task LoginAsync(UserLoginDto model, CancellationToken cancellationToken);
 
-        public Task<List<Claim>> GetUserClaimsAsync(String email);
+        public Task<List<Claim>> GetUserClaimsAsync(String email, CancellationToken cancellationToken);
     }
 }

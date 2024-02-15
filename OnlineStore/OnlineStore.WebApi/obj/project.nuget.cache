@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "wO9jMiRGjbN+xSX0qocXUsrHcbvB1qPb7BxSvSUbLei2O1gbEqWbd+qu8ikmRZ1tOrGX7TOfWB4EBbhusKxMJw==",
+  "dgSpecHash": "ChgJlem/K/1V/es8XYa4QJgj3Zzfv76rvTjZNoXU8gxGhXnIVyMzyhCfvmpTW0eUsGR3CqUgTx6SzZ28qT4KaA==",
   "success": true,
   "projectFilePath": "C:\\Users\\User\\Desktop\\Online-Store-ASP.NET-Core-Web-API-3\\OnlineStore\\OnlineStore.WebApi\\OnlineStore.WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\automapper\\13.0.0\\automapper.13.0.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\fluentvalidation\\11.9.0\\fluentvalidation.11.9.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.9.0\\fluentvalidation.dependencyinjectionextensions.11.9.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.16\\microsoft.aspnetcore.authentication.jwtbearer.6.0.16.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\7.0.0\\microsoft.aspnetcore.cryptography.internal.7.0.0.nupkg.sha512",

@@ -32,12 +32,14 @@ namespace OnlineStore.Data.Repositories.Implementations
             GC.SuppressFinalize(this);
         }
 
-        public virtual async Task<TEntity?> GetByIdAsync(Int32 id)
+        public virtual async Task<TEntity?> GetByIdAsync(Int32 id, CancellationToken cancellationToken)
         {
-            return await DbSet.AsNoTracking().FirstOrDefaultAsync(entity => entity.Id == id);
+            return await DbSet.AsNoTracking().FirstOrDefaultAsync(entity => entity.Id == id
+                , cancellationToken: cancellationToken);
         }
 
-        public virtual IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate,
+        public virtual IQueryable<TEntity> FindBy(
+            Expression<Func<TEntity, bool>> predicate,
             params Expression<Func<TEntity, object>>[] includes)
         {
             var result = DbSet.Where(predicate);
@@ -56,20 +58,21 @@ namespace OnlineStore.Data.Repositories.Implementations
             return DbSet;
         }
 
-        public virtual async Task<EntityEntry<TEntity>> AddAsync(TEntity entity)
+        public virtual async Task<EntityEntry<TEntity>> AddAsync(TEntity entity
+            , CancellationToken cancellationToken)
         {
-            return await DbSet.AddAsync(entity);
+            return await DbSet.AddAsync(entity, cancellationToken);
         }
 
-        public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities)
+        public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
-            await DbSet.AddRangeAsync(entities);
+            await DbSet.AddRangeAsync(entities, cancellationToken);
         }
 
-        public virtual async Task PatchAsync(Int32 id, List<Patch> patchDto)
+        public virtual async Task PatchAsync(Int32 id, List<Patch> patchDto, CancellationToken cancellationToken)
         {
             var entity =
-                await DbSet.FirstOrDefaultAsync(ent => ent.Id == id);
+                await DbSet.FirstOrDefaultAsync(ent => ent.Id == id, cancellationToken: cancellationToken);
 
             var nameValuePairProperties = patchDto.ToDictionary
             (k => k.PropertyName,
@@ -80,26 +83,26 @@ namespace OnlineStore.Data.Repositories.Implementations
             dbEntityEntry.State = EntityState.Modified;
         }
 
-        public virtual async Task Update(TEntity entity)
+        public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
         {
             DbSet.Update(entity);
         }
 
-        public virtual async Task Remove(Int32 id)
+        public virtual async Task RemoveAsync(Int32 id, CancellationToken cancellationToken)
         {
             var entity =
-                await DbSet.FirstOrDefaultAsync(ent => ent.Id == id);
+                await DbSet.FirstOrDefaultAsync(ent => ent.Id == id, cancellationToken: cancellationToken);
             if (entity != null) DbSet.Remove(entity);
         }
 
-        public virtual async Task RemoveRange(IEnumerable<TEntity> entities)
+        public virtual async Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
         {
             DbSet.RemoveRange(entities);
         }
 
-        public virtual async Task<Int32> CountAsync()
+        public virtual async Task<Int32> CountAsync(CancellationToken cancellationToken)
         {
-            return await DbSet.CountAsync();
+            return await DbSet.CountAsync(cancellationToken: cancellationToken);
         }
     }
 }

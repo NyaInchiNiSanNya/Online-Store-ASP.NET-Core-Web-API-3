@@ -18,49 +18,41 @@ namespace OnlineStore.Data.Repositories.Implementations
 
         }
 
-        public async Task AddCategoriesToProductAsync(Int32 productId, ICollection<Int32> categoriesId)
+        public async Task AddCategoriesToProductAsync(Int32 productId, ICollection<Int32> categoriesId, CancellationToken cancellationToken)
         {
-            var product = await DbSet.Include(p => p.Categories)
-                .FirstOrDefaultAsync(p => p.Id == productId);
+            var product = await DbSet.FindAsync(productId);
 
-            if (product == null)
-            {
-                throw new ArgumentException($"Product with ID {productId} not found.");
-            }
-
-            var categories = await Db.Categories.Where(c => categoriesId.Contains(c.Id)).ToListAsync();
-
-            if (categories.Count != categoriesId.Count)
-            {
-                throw new ArgumentException("One or more category IDs are invalid.");
-            }
+            var categories = await Db.Categories.Where(c => categoriesId.Contains(c.Id))
+                .ToListAsync(cancellationToken: cancellationToken);
 
             foreach (var category in categories)
             {
                 product.Categories.Add(category);
             }
 
-            await Db.SaveChangesAsync();
+            await Db.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Product>?> GetProductsByPageAsync(Int32 page, Int32 pageSize)
+        public async Task<IEnumerable<Product>?> GetProductsByPageAsync(Int32 page, Int32 pageSize
+            , CancellationToken cancellationToken)
         {
             var products = await DbSet
                 .AsNoTracking()
                 .OrderByDescending(x => x.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken: cancellationToken);
 
             return products;
         }
 
-        public async Task<IEnumerable<Product>?> GetProductsByCategoryIdAsync(Int32 categoryId)
+        public async Task<IEnumerable<Product>?> GetProductsByCategoryIdAsync(Int32 categoryId
+            , CancellationToken cancellationToken)
         {
             var productsInCategory = await DbSet
                 .AsNoTracking()
                 .Where(p => p.Categories.Any(c => c.Id == categoryId))
-                .ToListAsync();
+                .ToListAsync(cancellationToken: cancellationToken);
 
             return productsInCategory;
         }

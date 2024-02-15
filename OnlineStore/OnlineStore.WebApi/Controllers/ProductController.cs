@@ -18,88 +18,96 @@ namespace OnlineStore.WebApi.Controllers
             _serviceFactory = serviceFactory ?? throw new NullReferenceException(nameof(serviceFactory));
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPatch]
         public async Task<IActionResult> UpdateProduct([FromBody] PatchProductRequest request)
         {
 
             var newProduct = _serviceFactory.CreateMapperService().Map<ProductDto>(request);
 
-            var isProductUpdated = await _serviceFactory
-                .CreateProductService()
-                .UpdateProductAsync(newProduct);
-
-            if (isProductUpdated)
+            try
             {
-                return Ok();
+                await _serviceFactory
+                    .CreateProductService()
+                    .UpdateProductAsync(newProduct, CancellationToken.None);
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
             }
 
-            return NotFound();
+            return Ok();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteProduct(Int32 id)
         {
             if (id > 0)
             {
-                var isProductDeleted = await _serviceFactory
-                    .CreateProductService()
-                    .DeleteProductByIdAsync(id);
-
-                if (isProductDeleted)
+                try
                 {
-                    return Ok();
+                    await _serviceFactory
+                        .CreateProductService()
+                        .DeleteProductByIdAsync(id, CancellationToken.None);
                 }
-
-                return NotFound();
+                catch (ArgumentException)
+                {
+                    return BadRequest();
+                }
+                catch (InvalidOperationException)
+                {
+                    return NotFound();
+                }
             }
 
-
-            return BadRequest();
-
+            return Ok();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateNewProduct([FromBody] CreateNewProductRequest request)
         {
             var newProduct = _serviceFactory.CreateMapperService().Map<ProductDto>(request);
 
-            Int32 productId;
-
             try
             {
-                productId = await _serviceFactory
+                await _serviceFactory
                     .CreateProductService()
-                    .CreateNewProductAsync(newProduct);
+                    .CreateNewProductAsync(newProduct, CancellationToken.None);
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
-                return BadRequest(e.Message);
+                return BadRequest("product already exist");
             }
 
-            return Ok(productId);
+            return Ok();
         }
 
-        [Authorize(Roles = "User")]
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetSelectedCategory(Int32 id)
+        public async Task<IActionResult> GetSelectedProduct(Int32 id)
         {
             if (id > 0)
             {
-                ProductDto? categoryDto = await _serviceFactory
+                try
+                {
+                    ProductDto? categoryDto = await _serviceFactory
                     .CreateProductService()
-                    .GetProductByIdAsync(id);
+                    .GetProductByIdAsync(id, CancellationToken.None);
 
-                if (categoryDto == null)
+                    return Ok(_serviceFactory.CreateMapperService().Map<GetProductByIdResponse>(categoryDto));
+
+                }
+                catch (InvalidOperationException)
                 {
                     return NotFound();
                 }
 
-                return Ok(_serviceFactory.CreateMapperService().Map<GetProductByIdResponse>(categoryDto));
             }
-
             return BadRequest();
         }
     }

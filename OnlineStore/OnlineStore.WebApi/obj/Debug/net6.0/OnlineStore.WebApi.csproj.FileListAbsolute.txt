@@ -71,3 +71,6 @@ C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStor
 C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.WebApi\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.WebApi\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.WebApi\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.WebApi\bin\Debug\net6.0\FluentValidation.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.WebApi\bin\Debug\net6.0\FluentValidation.AspNetCore.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.WebApi\bin\Debug\net6.0\FluentValidation.DependencyInjectionExtensions.dll

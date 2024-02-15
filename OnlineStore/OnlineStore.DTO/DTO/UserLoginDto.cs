@@ -8,7 +8,7 @@ namespace OnlineStore.DTO.DTO
 {
     public class UserLoginDto
     {
-        public string Password { get; set; }
-        public string Email { get; set; }
+        public String Password { get; set; }
+        public String Email { get; set; }
     }
 }

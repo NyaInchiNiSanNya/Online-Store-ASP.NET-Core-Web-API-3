@@ -9,16 +9,17 @@ namespace OnlineStore.BusinessLogic.Interfaces
 {
     public interface IProductService
     {
-        public Task<ProductDto?> GetProductByIdAsync(Int32 categoryId);
+        public Task<ProductDto?> GetProductByIdAsync(Int32 categoryId, CancellationToken cancellationToken);
 
-        public Task<Boolean> DeleteProductByIdAsync(Int32 categoryId);
+        public Task DeleteProductByIdAsync(Int32 categoryId, CancellationToken cancellationToken);
 
-        public Task<Int32> CreateNewProductAsync(ProductDto newCategory);
+        public Task CreateNewProductAsync(ProductDto newCategory, CancellationToken cancellationToken);
 
-        public Task<Boolean> UpdateProductAsync(ProductDto newCategory);
+        public Task UpdateProductAsync(ProductDto newCategory, CancellationToken cancellationToken);
 
-        public Task<IEnumerable<ProductDto>?> GetProductsByPageAsync(Int32 page, Int32 pageSize);
+        public Task<IEnumerable<ProductDto>?> GetProductsByPageAsync(ProductsPaginationDto productsPagination
+            , CancellationToken cancellationToken);
 
-        public Task<IEnumerable<ProductDto>?> GetProductsByCategoryAsync(Int32 categoryId);
+        public Task<IEnumerable<ProductDto>?> GetProductsByCategoryAsync(Int32 categoryId, CancellationToken cancellationToken);
     }
 }
