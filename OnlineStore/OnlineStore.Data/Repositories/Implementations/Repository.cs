@@ -32,7 +32,7 @@ namespace OnlineStore.Data.Repositories.Implementations
             GC.SuppressFinalize(this);
         }
 
-        public virtual async Task<TEntity?> GetByIdAsync(Int32 id, CancellationToken cancellationToken)
+        public virtual async Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             return await DbSet.AsNoTracking().FirstOrDefaultAsync(entity => entity.Id == id
                 , cancellationToken: cancellationToken);
@@ -69,7 +69,7 @@ namespace OnlineStore.Data.Repositories.Implementations
             await DbSet.AddRangeAsync(entities, cancellationToken);
         }
 
-        public virtual async Task PatchAsync(Int32 id, List<Patch> patchDto, CancellationToken cancellationToken)
+        public virtual async Task PatchAsync(int id, List<Patch> patchDto, CancellationToken cancellationToken)
         {
             var entity =
                 await DbSet.FirstOrDefaultAsync(ent => ent.Id == id, cancellationToken: cancellationToken);
@@ -88,7 +88,7 @@ namespace OnlineStore.Data.Repositories.Implementations
             DbSet.Update(entity);
         }
 
-        public virtual async Task RemoveAsync(Int32 id, CancellationToken cancellationToken)
+        public virtual async Task RemoveAsync(int id, CancellationToken cancellationToken)
         {
             var entity =
                 await DbSet.FirstOrDefaultAsync(ent => ent.Id == id, cancellationToken: cancellationToken);
@@ -100,7 +100,7 @@ namespace OnlineStore.Data.Repositories.Implementations
             DbSet.RemoveRange(entities);
         }
 
-        public virtual async Task<Int32> CountAsync(CancellationToken cancellationToken)
+        public virtual async Task<int> CountAsync(CancellationToken cancellationToken)
         {
             return await DbSet.CountAsync(cancellationToken: cancellationToken);
         }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ChgJlem/K/1V/es8XYa4QJgj3Zzfv76rvTjZNoXU8gxGhXnIVyMzyhCfvmpTW0eUsGR3CqUgTx6SzZ28qT4KaA==",
+  "dgSpecHash": "hWH9dnSeRlTdFnR4H1JkcWqeFf0FtQVEO1T5oO9Z1Mjk3evYvMJxWxx/OJAtYXHXKKRvz15rE7jDb42ZsYg1ZQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\User\\Desktop\\Online-Store-ASP.NET-Core-Web-API-3\\OnlineStore\\OnlineStore.WebApi\\OnlineStore.WebApi.csproj",
   "expectedPackageFiles": [
@@ -40,6 +40,7 @@
     "C:\\Users\\User\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.10.0\\microsoft.identitymodel.tokens.6.10.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\npgsql\\7.0.2\\npgsql.7.0.2.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\7.0.3\\npgsql.entityframeworkcore.postgresql.7.0.3.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",

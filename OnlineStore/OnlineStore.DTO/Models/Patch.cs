@@ -8,7 +8,7 @@ namespace OnlineStore.DTO.Models
 {
     public class Patch
     {
-        public String PropertyName { get; set; }
+        public string PropertyName { get; set; }
         public object? PropertyValue { get; set; }
     }
 }

@@ -1,16 +1,12 @@
 ﻿using FluentValidation;
-using OnlineStore.BusinessLogic.Models.Requests;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OnlineStore.DTO.DTO;
 
 namespace OnlineStore.BusinessLogic.Validators
 {
-    public class PageValidator : AbstractValidator<GetProductsByPageRequest>
+
+    public class ProductsPaginationDtoValidator : AbstractValidator<ProductsPaginationDto>
     {
-        public PageValidator()
+        public ProductsPaginationDtoValidator()
         {
             RuleFor(x => x.PageSize).GreaterThanOrEqualTo(1).LessThanOrEqualTo(50);
             RuleFor(x => x.Page).GreaterThanOrEqualTo(1).LessThanOrEqualTo(50);

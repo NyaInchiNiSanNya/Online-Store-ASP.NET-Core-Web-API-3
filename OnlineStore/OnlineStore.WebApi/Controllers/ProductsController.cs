@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineStore.BusinessLogic.Models.Requests;
-using OnlineStore.BusinessLogic.Models.Responses;
+using OnlineStore.BusinessLogic.Interfaces;
 using OnlineStore.DTO.DTO;
-using OnlineStore.WebApi.ServiceFactory;
 
 namespace OnlineStore.WebApi.Controllers
 {
@@ -11,20 +9,17 @@ namespace OnlineStore.WebApi.Controllers
     [Route("products")]
     public class ProductsController : ControllerBase
     {
-        private readonly IServiceFactory _serviceFactory;
+        private readonly IProductService _productService;
 
-        public ProductsController(IServiceFactory serviceFactory)
+        public ProductsController(IProductService productService)
         {
-            _serviceFactory = serviceFactory 
-                              ?? throw new NullReferenceException(nameof(serviceFactory));
+            _productService = productService
+                              ?? throw new NullReferenceException(nameof(productService));
         }
         [HttpGet]
-        public async Task<IActionResult> GetProductsByPage([FromQuery] GetProductsByPageRequest request)
+        public async Task<IActionResult> GetProductsByPage([FromQuery] ProductsPaginationDto productsByPageDto)
         {
-            var productsByPageDto = _serviceFactory.CreateMapperService().Map<ProductsPaginationDto>(request);
-
-            var productsList = await _serviceFactory
-                .CreateProductService()
+            var productsList = await _productService
                 .GetProductsByPageAsync(productsByPageDto, CancellationToken.None);
 
             return Ok(productsList);
@@ -32,14 +27,9 @@ namespace OnlineStore.WebApi.Controllers
         }
 
         [HttpGet("{categoryId:int}")]
-        public async Task<IActionResult> GetProductsByCategory(Int32 categoryId)
+        public async Task<IActionResult> GetProductsByCategory(int categoryId)
         {
-            if (categoryId < 1)
-            {
-                return BadRequest();
-            }
-
-            var productsByCategory = await _serviceFactory.CreateProductService()
+            var productsByCategory = await _productService
                 .GetProductsByCategoryAsync(categoryId, CancellationToken.None);
 
             return Ok(productsByCategory);

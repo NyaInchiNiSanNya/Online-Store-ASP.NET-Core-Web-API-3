@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 
 namespace OnlineStore.BusinessLogic.Interfaces
 {
     public interface IJwtService
     {
-        public Task<String> GetJwtTokenStringAsync(List<Claim> user, CancellationToken cancellationToken);
+        public Task<string> GetJwtTokenStringAsync(List<Claim> user, CancellationToken cancellationToken);
     }
 }

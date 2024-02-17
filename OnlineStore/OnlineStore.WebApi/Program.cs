@@ -1,9 +1,7 @@
 using OnlineStore.BusinessLogic.Extensions;
 using OnlineStore.Data.Extensions;
 using OnlineStore.WebApi.Filters.Errors;
-using OnlineStore.WebApi.ServiceFactory;
 using FluentValidation.AspNetCore;
-using System.Reflection;
 
 namespace OnlineStore.WebApi
 {
@@ -14,10 +12,7 @@ namespace OnlineStore.WebApi
             var builder = WebApplication.CreateBuilder(args);
 
 
-            builder.Services.AddControllers(options =>
-            {
-                options.Filters.Add<CustomExceptionFilterAttribute>();
-            });
+            builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -26,9 +21,9 @@ namespace OnlineStore.WebApi
             builder.Services.AddRepositories();
             builder.Services.AddServices();
             builder.Services.AddFluentValidationAutoValidation();
-            builder.Services.AddScoped<IServiceFactory, ServiceFactory.ServiceFactory>();
             
             var app = builder.Build();
+
 
             if (app.Environment.IsDevelopment())
             {
@@ -41,7 +36,7 @@ namespace OnlineStore.WebApi
             app.UseAuthentication();
             app.UseAuthorization();
 
-
+            app.UseMiddleware<ExceptionMiddleware>();
             app.MapControllers();
 
             app.Run();

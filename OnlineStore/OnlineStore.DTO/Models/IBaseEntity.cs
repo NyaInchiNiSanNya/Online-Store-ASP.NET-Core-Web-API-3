@@ -8,6 +8,6 @@ namespace OnlineStore.DTO.Models
 {
     public interface IBaseEntity
     {
-        public Int32 Id { get; set; }
+        public int Id { get; set; }
     }
 }

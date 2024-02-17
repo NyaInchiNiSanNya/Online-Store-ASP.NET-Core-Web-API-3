@@ -1,15 +1,9 @@
 ﻿using FluentValidation;
-using Microsoft.Extensions.FileSystemGlobbing.Internal;
-using OnlineStore.BusinessLogic.Models.Requests;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OnlineStore.DTO.DTO;
 
 namespace OnlineStore.BusinessLogic.Validators
 {
-    public class RegistrationValidator : AbstractValidator<RegistrationRequest>
+    public class RegistrationValidator : AbstractValidator<UserRegistrationDto>
     {
         public RegistrationValidator()
         {

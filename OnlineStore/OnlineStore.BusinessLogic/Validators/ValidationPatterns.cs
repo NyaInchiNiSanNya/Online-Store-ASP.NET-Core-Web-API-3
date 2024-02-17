@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OnlineStore.BusinessLogic.Validators
+﻿namespace OnlineStore.BusinessLogic.Validators
 {
     public static class Patterns
     {

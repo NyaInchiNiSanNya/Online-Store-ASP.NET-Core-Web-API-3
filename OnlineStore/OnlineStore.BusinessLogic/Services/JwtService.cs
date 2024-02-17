@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OnlineStore.BusinessLogic.Interfaces;
@@ -15,12 +10,10 @@ namespace OnlineStore.BusinessLogic.Services
 {
     internal class JwtService : IJwtService
     {
-        private readonly IConfiguration _configuration;
         private readonly JwtSettings _jwtSettings;
 
-        public JwtService(IConfiguration configuration, IOptions<JwtSettings> jwtSettings)
+        public JwtService(IOptions<JwtSettings> jwtSettings)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _jwtSettings = jwtSettings.Value ?? throw new ArgumentNullException(nameof(jwtSettings));
         }
         

@@ -1,17 +1,9 @@
-﻿using AutoMapper;
-using OnlineStore.BusinessLogic.Interfaces;
-using OnlineStore.Data.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using OnlineStore.BusinessLogic.Interfaces;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using OnlineStore.DTO.DTO;
 using Microsoft.AspNetCore.Identity;
 using OnlineStore.Data.Entities;
-using System.Data;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using OnlineStore.BusinessLogic.Excpetions;
 
 namespace OnlineStore.BusinessLogic.Services
 {
@@ -20,21 +12,23 @@ namespace OnlineStore.BusinessLogic.Services
 
         private readonly UserManager<User> _userManager;
         private readonly IRoleService _roleService;
+        private readonly IJwtService _jwtService;
 
-        public IdentityService(UserManager<User> userManager, IRoleService roleService)
+        public IdentityService(UserManager<User> userManager, IRoleService roleService, IJwtService jwtService)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
+            _jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
         }
 
 
-        public async Task<Boolean> RegistrationAsync(UserRegistrationDto model, CancellationToken cancellationToken)
+        public async Task RegistrationAsync(UserRegistrationDto model, CancellationToken cancellationToken)
         {
             var isUserExistByEmail = await _userManager.FindByEmailAsync(model.Email);
 
             if (isUserExistByEmail != null)
             {
-                throw new InvalidOperationException("User with this email already exist.");
+                throw new ObjectAlreadyExistException("User with this email already exist.");
             }
 
             var newUser = new User { Email = model.Email, UserName = model.Name };
@@ -46,26 +40,26 @@ namespace OnlineStore.BusinessLogic.Services
                 await _userManager.AddToRoleAsync(newUser, await _roleService
                     .GetDefaultRoleAsync(cancellationToken: cancellationToken));
                 
-                return true;
+                return;
             }
 
             var errors = result.Errors.Select(e => e.Description).ToList();
 
-            throw new InvalidOperationException(String.Join(", ", errors));
+            throw new BadRegistrationException(String.Join(", ", errors));
         }
 
         public async Task LoginAsync(UserLoginDto userLogin, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(userLogin.Email);
 
-            if (user != null )
+            if (user == null )
             {
-                throw new InvalidOperationException($"User {userLogin.Email} not found");
+                throw new ObjectNotFoundException($"User {userLogin.Email} not found");
             }
 
-            if (await _userManager.CheckPasswordAsync(user, userLogin.Password))
+            if (!await _userManager.CheckPasswordAsync(user, userLogin.Password))
             {
-                throw new InvalidOperationException($"password verification failed: {userLogin.Email}");
+                throw new BadAuthorizeException($"Password verification failed");
             }
         }
 
@@ -97,6 +91,18 @@ namespace OnlineStore.BusinessLogic.Services
             }
 
             return claims;
+        }
+
+        public async Task<string> LoginAndGetJwtTokenAsync(UserLoginDto loginDto, CancellationToken cancellationToken)
+        {
+            await LoginAsync(loginDto, cancellationToken);
+
+            var claims = await GetUserClaimsAsync(loginDto.Email, CancellationToken.None);
+
+            var jwtToken = await _jwtService
+                .GetJwtTokenStringAsync(claims, CancellationToken.None);
+
+            return jwtToken;
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data.Contexts;
 using OnlineStore.Data.Entities;
 using OnlineStore.Data.Interfaces;
@@ -18,7 +13,7 @@ namespace OnlineStore.Data.Repositories.Implementations
             
         }
 
-        public async Task<IEnumerable<Сategory>?> GetCategoriesByPageAsync(Int32 page, Int32 pageSize
+        public async Task<IEnumerable<Сategory>?> GetCategoriesByPageAsync(int page, int pageSize
             , CancellationToken cancellationToken)
         {
             var categories = await DbSet

@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OnlineStore.BusinessLogic.Models.Requests;
-using OnlineStore.BusinessLogic.Models.Responses;
+using OnlineStore.BusinessLogic.Interfaces;
 using OnlineStore.DTO.DTO;
-using OnlineStore.WebApi.ServiceFactory;
 
 namespace OnlineStore.WebApi.Controllers
 {
@@ -12,107 +10,52 @@ namespace OnlineStore.WebApi.Controllers
     [Route("category")]
     public class CategoryController : ControllerBase
     {
-        private readonly IServiceFactory _serviceFactory;
+        private readonly ICategoryService _categoryService;
 
-        public CategoryController(IServiceFactory serviceFactory)
+        public CategoryController(ICategoryService categoryService)
         {
-            _serviceFactory = serviceFactory ?? throw new NullReferenceException(nameof(serviceFactory));
+            _categoryService = categoryService ?? throw new NullReferenceException(nameof(categoryService));
         }
 
         //[Authorize(Roles = "Admin")]
         [HttpPatch]
-        public async Task<IActionResult> UpdateCategory([FromBody] PatchCategoryRequest request)
+        public async Task<IActionResult> UpdateCategory([FromBody] CategoryDto categoryDto)
         {
-
-            var newCategory = _serviceFactory.CreateMapperService().Map<CategoryDto>(request);
-
-            try
-            {
-                await _serviceFactory
-                    .CreateCategoryService()
-                    .UpdateCategoryAsync(newCategory, CancellationToken.None);
-
-            }
-            catch (ArgumentException)
-            {
-                return BadRequest();
-            }
-            catch (InvalidOperationException)
-            {
-                return NotFound();
-            }
+            await _categoryService
+                    .UpdateCategoryAsync(categoryDto, CancellationToken.None);
 
             return Ok();
         }
 
         //[Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteCategory(Int32 id)
+        public async Task<IActionResult> DeleteCategory(int id)
         {
-            if (id > 0)
-            {
-                try
-                {
-                    await _serviceFactory
-                        .CreateCategoryService()
-                        .DeleteCategoryByIdAsync(id, CancellationToken.None);
-                }
-                catch (ArgumentException)
-                {
-                    return BadRequest();
-                }
-                catch (InvalidOperationException)
-                {
-                    return NotFound();
-                }
-
-            }
+            await _categoryService
+                    .DeleteCategoryByIdAsync(id, CancellationToken.None);
 
             return Ok();
-
 
         }
 
         //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateNewCategory([FromBody] CreateNewCategoryRequest request)
+        public async Task<IActionResult> CreateNewCategory([FromBody] CategoryDto categoryDto)
         {
-            var newCategory = _serviceFactory.CreateMapperService().Map<CategoryDto>(request);
-            
-            try
-            {
-                await _serviceFactory
-                    .CreateCategoryService()
-                    .CreateNewCategoryAsync(newCategory, CancellationToken.None);
-            }
-            catch(InvalidOperationException)
-            {
-                return BadRequest("category already exist");
-            }
-
+            await _categoryService
+                    .CreateNewCategoryAsync(categoryDto, CancellationToken.None);
+                
             return Ok();
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetSelectedCategory(Int32 id)
+        public async Task<IActionResult> GetSelectedCategory(int id)
         {
-            if (id > 0)
-            {
-                try
-                {
-                    CategoryDto? categoryDto = await _serviceFactory
-                        .CreateCategoryService()
-                        .GetCategoryByIdAsync(id, CancellationToken.None);
+            var categoryDto = await _categoryService
+                    .GetCategoryByIdAsync(id, CancellationToken.None);
 
-                    return Ok(_serviceFactory.CreateMapperService().Map<GetCategoryByIdResponse>(categoryDto));
-                }
-                catch (InvalidOperationException)
-                {
-                    return NotFound();
-                }
-            }
-
-            return BadRequest();
+            return Ok(categoryDto);
+            
         }
     }
 }

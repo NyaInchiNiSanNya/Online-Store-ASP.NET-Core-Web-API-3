@@ -1,16 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using OnlineStore.Data.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OnlineStore.BusinessLogic.Interfaces;
 using OnlineStore.BusinessLogic.Services;
 using System.Reflection;
 using FluentValidation;
 using OnlineStore.BusinessLogic.Validators;
-using OnlineStore.BusinessLogic.Models.ConfigurationModels;
+using OnlineStore.DTO.DTO;
 
 namespace OnlineStore.BusinessLogic.Extensions
 {
@@ -26,7 +20,8 @@ namespace OnlineStore.BusinessLogic.Extensions
             services.AddScoped<IRoleService, RoleService>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddValidatorsFromAssemblyContaining<LoginValidator>();
+            
+            services.AddValidatorsFromAssemblyContaining<UserLoginDtoValidator>();
 
             return services;
         }

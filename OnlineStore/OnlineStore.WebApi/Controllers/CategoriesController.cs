@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineStore.BusinessLogic.Models.Requests;
-using OnlineStore.BusinessLogic.Models.Responses;
+using OnlineStore.BusinessLogic.Interfaces;
 using OnlineStore.DTO.DTO;
-using OnlineStore.WebApi.ServiceFactory;
 using System.ComponentModel.DataAnnotations;
 
 namespace OnlineStore.WebApi.Controllers
@@ -12,24 +10,20 @@ namespace OnlineStore.WebApi.Controllers
     [Route("categories")]
     public class CategoriesController : ControllerBase
     {
-        private readonly IServiceFactory _serviceFactory;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(IServiceFactory serviceFactory)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _serviceFactory = serviceFactory ?? throw new NullReferenceException(nameof(serviceFactory));
+            _categoryService = categoryService ?? throw new NullReferenceException(nameof(categoryService));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCategoriesByPage([FromQuery] GetCategoriesByPageRequest request)
+        public async Task<IActionResult> GetCategoriesByPage([FromQuery] CategoriesPaginationDto paginationDto)
         {
-            var categoriesPagination = _serviceFactory.CreateMapperService().Map<CategoriesPaginationDto>(request);
-            
-            var categoriesList = await _serviceFactory
-                .CreateCategoryService()
-                .GetCategoriesByPageAsync(categoriesPagination, CancellationToken.None);
+            var categoriesList = await _categoryService
+                .GetCategoriesByPageAsync(paginationDto, CancellationToken.None);
 
             return Ok(categoriesList);
-
         }
     }
 }

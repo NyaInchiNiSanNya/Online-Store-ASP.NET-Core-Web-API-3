@@ -1,18 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using OnlineStore.Data.Contexts.EntitiesConfiguration;
 using OnlineStore.Data.Entities;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace OnlineStore.Data.Contexts
 {
-    public class ProductsOrdersContext : IdentityDbContext<User, Role, Int32>
+    public class ProductsOrdersContext : IdentityDbContext<User, Role, int>
     {
         public DbSet<Сategory> Categories { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }

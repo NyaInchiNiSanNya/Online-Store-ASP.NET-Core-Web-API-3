@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OnlineStore.DTO.Models;
 
@@ -12,7 +7,7 @@ namespace OnlineStore.Data.Interfaces
     public interface IRepository<T> : IDisposable
         where T : class, IBaseEntity
     {
-        public Task<T?> GetByIdAsync(Int32 id, CancellationToken cancellationToken);
+        public Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken);
         
         public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate
             , params Expression<Func<T, object>>[] includes);

@@ -1,10 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OnlineStore.Data.Interfaces;
 using OnlineStore.Data.Repositories;
 using OnlineStore.Data.Repositories.Implementations;

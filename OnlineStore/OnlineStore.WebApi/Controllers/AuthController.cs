@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineStore.WebApi.ServiceFactory;
-using System.ComponentModel.DataAnnotations;
-using OnlineStore.BusinessLogic.Models.Requests;
+using OnlineStore.BusinessLogic.Interfaces;
 using OnlineStore.DTO.DTO;
 
 namespace OnlineStore.WebApi.Controllers
@@ -10,62 +8,35 @@ namespace OnlineStore.WebApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IServiceFactory _serviceFactory;
+        private readonly IIdentityService _identityService;
+        private readonly IJwtService _jwtService;
 
-        public AuthController(
-            IServiceFactory serviceFactory)
+        public AuthController(IIdentityService identityService, IJwtService jwtService)
         {
-            _serviceFactory = serviceFactory ?? throw new NullReferenceException(nameof(serviceFactory));
+            _identityService = identityService ??
+                               throw new NullReferenceException(nameof(identityService));
+            _jwtService = jwtService ??
+                          throw new NullReferenceException(nameof(jwtService));
         }
 
         [HttpPost]
         [Route("registration")]
-        public async Task<IActionResult> Registration([FromBody] RegistrationRequest registrationRequest)
+        public async Task<IActionResult> Registration([FromBody] UserRegistrationDto registrationDto)
         {
-            try
-            {
-                await _serviceFactory
-                        .CreateIdentityService()
-                        .RegistrationAsync(_serviceFactory
-                            .CreateMapperService()
-                            .Map<UserRegistrationDto>(registrationRequest)!, CancellationToken.None);
-
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
+            await _identityService
+                        .RegistrationAsync(registrationDto, CancellationToken.None);
 
             return Ok();
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        public async Task<IActionResult> Login([FromBody] UserLoginDto loginDto)
         {
-            try
-            {
+            var jwtToken = await _identityService
+                    .LoginAndGetJwtTokenAsync(loginDto, CancellationToken.None);
 
-                await _serviceFactory
-                    .CreateIdentityService()
-                    .LoginAsync(_serviceFactory
-                        .CreateMapperService()
-                        .Map<UserLoginDto>(loginRequest)!, CancellationToken.None);
-                
-                var claims = await _serviceFactory.CreateIdentityService()
-                    .GetUserClaimsAsync(loginRequest.Email, CancellationToken.None);
-
-                var jwtToken = await _serviceFactory.CreateJwtService()
-                    .GetJwtTokenStringAsync(claims, CancellationToken.None);
-
-                return Ok(jwtToken);
-
-            }
-            catch (InvalidOperationException)
-            {
-                return BadRequest("Invalid email or password");
-            }
+            return Ok(jwtToken);
 
         }
 

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using OnlineStore.BusinessLogic.Excpetions;
 using OnlineStore.BusinessLogic.Interfaces;
 using OnlineStore.Data.Entities;
 using OnlineStore.Data.Interfaces;
@@ -24,18 +20,19 @@ namespace OnlineStore.BusinessLogic.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
+
         public async Task<CategoryDto?> GetCategoryByIdAsync(Int32 categoryId, CancellationToken cancellationToken)
         {
             if (categoryId < 1)
             {
-                throw new ArgumentException(nameof(categoryId));
+                throw new InvalidIdException($"Id {categoryId} is invalid");
             }
 
             var category = await _unitOfWork.Categories.GetByIdAsync(categoryId, cancellationToken);
 
             if (category == null)
             {
-                throw new InvalidOperationException($"Category {categoryId} not found");
+                throw new ObjectNotFoundException($"Category {categoryId} not found");
             }
 
             return _mapper.Map<CategoryDto>(category);
@@ -45,14 +42,14 @@ namespace OnlineStore.BusinessLogic.Services
         {
             if (categoryId < 1)
             {
-                throw new ArgumentException(nameof(categoryId));
+                throw new InvalidIdException($"Id {categoryId} is invalid");
             }
 
             var category = await _unitOfWork.Categories.GetByIdAsync(categoryId, cancellationToken);
 
             if (category == null)
             {
-                throw new InvalidOperationException($"Category {categoryId} not found");
+                throw new ObjectNotFoundException($"Category {categoryId} not found");
             }
 
             await _unitOfWork.Categories.RemoveAsync(categoryId, cancellationToken);
@@ -69,7 +66,7 @@ namespace OnlineStore.BusinessLogic.Services
 
             if (category != null)
             {
-                throw new InvalidOperationException($"Category {newCategory.Name} already exist");
+                throw new ObjectAlreadyExistException($"Category {newCategory.Name} already exist");
             }
 
             var newCategoryToCreate = _mapper.Map<Сategory>(newCategory);
@@ -77,10 +74,6 @@ namespace OnlineStore.BusinessLogic.Services
             await _unitOfWork.Categories.AddAsync(newCategoryToCreate, cancellationToken);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            
-            await _unitOfWork.Categories
-                .FindBy(x => x.Name.Equals(newCategory.Name))
-                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
         }
 
@@ -88,14 +81,14 @@ namespace OnlineStore.BusinessLogic.Services
         {
             if (newCategory.Id < 1)
             {
-                throw new ArgumentException(nameof(newCategory));
+                throw new InvalidIdException($"Id {newCategory.Id} is invalid");
             }
 
             var category = await _unitOfWork.Categories.GetByIdAsync(newCategory.Id, cancellationToken);
 
             if (category == null)
             {
-                throw new InvalidOperationException($"Category {newCategory.Id} not found");
+                throw new ObjectNotFoundException($"Category {newCategory.Id} not found");
             }
 
             var patchDto = new List<Patch> {

@@ -8,8 +8,9 @@ namespace OnlineStore.DTO.DTO
 {
     public class CategoryDto
     {
-        public Int32 Id { get; set; }
-        public String Name { get; set; }
+        public int Id { get; set; }
+
+        public string Name { get; set; }
 
     }
 }

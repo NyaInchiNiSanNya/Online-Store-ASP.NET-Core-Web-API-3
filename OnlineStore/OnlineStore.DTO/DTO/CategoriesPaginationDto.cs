@@ -8,8 +8,8 @@ namespace OnlineStore.DTO.DTO
 {
     public class CategoriesPaginationDto
     {
-        public Int32 Page { get; set; }
+        public int Page { get; set; }
 
-        public Int32 PageSize { get; set; }
+        public int PageSize { get; set; }
     }
 }

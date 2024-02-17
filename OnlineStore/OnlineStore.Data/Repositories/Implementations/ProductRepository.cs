@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data.Contexts;
 using OnlineStore.Data.Entities;
 using OnlineStore.Data.Interfaces;
@@ -18,22 +13,24 @@ namespace OnlineStore.Data.Repositories.Implementations
 
         }
 
-        public async Task AddCategoriesToProductAsync(Int32 productId, ICollection<Int32> categoriesId, CancellationToken cancellationToken)
+        public async Task AddCategoriesToProductAsync(Product product, ICollection<int> categoriesId, CancellationToken cancellationToken)
         {
-            var product = await DbSet.FindAsync(productId);
+            var productToUpdate = await DbSet
+                .Include(p => p.Categories)
+                .FirstOrDefaultAsync(x=>x.Name.Equals(product.Name), cancellationToken: cancellationToken);
 
             var categories = await Db.Categories.Where(c => categoriesId.Contains(c.Id))
                 .ToListAsync(cancellationToken: cancellationToken);
 
             foreach (var category in categories)
             {
-                product.Categories.Add(category);
+                productToUpdate.Categories.Add(category);
             }
 
             await Db.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Product>?> GetProductsByPageAsync(Int32 page, Int32 pageSize
+        public async Task<IEnumerable<Product>?> GetProductsByPageAsync(int page, int pageSize
             , CancellationToken cancellationToken)
         {
             var products = await DbSet
@@ -46,7 +43,7 @@ namespace OnlineStore.Data.Repositories.Implementations
             return products;
         }
 
-        public async Task<IEnumerable<Product>?> GetProductsByCategoryIdAsync(Int32 categoryId
+        public async Task<IEnumerable<Product>?> GetProductsByCategoryIdAsync(int categoryId
             , CancellationToken cancellationToken)
         {
             var productsInCategory = await DbSet

@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
 using OnlineStore.Data.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OnlineStore.BusinessLogic.Interfaces;
 using OnlineStore.DTO.DTO;
 using OnlineStore.DTO.Models;
 using Microsoft.EntityFrameworkCore;
+using OnlineStore.BusinessLogic.Excpetions;
 using OnlineStore.Data.Entities;
 
 namespace OnlineStore.BusinessLogic.Services
@@ -32,14 +28,14 @@ namespace OnlineStore.BusinessLogic.Services
         {
             if (productId < 1)
             {
-                throw new ArgumentException(nameof(productId));
+                throw new InvalidIdException($"Id {productId} is invalid");
             }
 
             var product = await _unitOfWork.Products.GetByIdAsync(productId, cancellationToken);
 
             if (product == null)
             {
-                throw new InvalidOperationException($"Product {productId} not found");
+                throw new ObjectNotFoundException($"Product {productId} not found");
             }
 
             return _mapper.Map<ProductDto>(product);
@@ -49,14 +45,14 @@ namespace OnlineStore.BusinessLogic.Services
         {
             if (productId < 1)
             {
-                throw new ArgumentException(nameof(productId));
+                throw new InvalidIdException($"Id {productId} is invalid");
             }
 
             var product = await _unitOfWork.Products.GetByIdAsync(productId, cancellationToken);
 
             if (product == null)
             {
-                throw new InvalidOperationException($"Product {productId} not found");
+                throw new ObjectNotFoundException($"Product {productId} not found");
             }
 
             await _unitOfWork.Products.RemoveAsync(productId, cancellationToken);
@@ -72,44 +68,45 @@ namespace OnlineStore.BusinessLogic.Services
 
             if (product != null)
             {
-                throw new InvalidOperationException($"Product {newProduct.Name} already exist");
+                throw new ObjectAlreadyExistException($"Product {newProduct.Name} already exist");
             }
 
             var newProductToCreate = _mapper.Map<Product>(newProduct);
 
-
-            await _unitOfWork.Products.AddAsync(newProductToCreate, cancellationToken);
-
+            await _unitOfWork.Products.AddAsync(newProductToCreate!, cancellationToken);
+            
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var createdProduct = await _unitOfWork.Products
-                .FindBy(x => x.Name.Equals(newProduct.Name))
-                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            if (newProduct.CategoriesId != null && newProduct.CategoriesId.Any())
+            {
+                await _unitOfWork.Products.AddCategoriesToProductAsync(newProductToCreate!
+                    , newProduct.CategoriesId, cancellationToken);
+            }
 
         }
 
-        public async Task UpdateProductAsync(ProductDto newProducts, CancellationToken cancellationToken)
+        public async Task UpdateProductAsync(ProductDto newProduct, CancellationToken cancellationToken)
         {
-            if (newProducts.Id < 1)
+            if (newProduct.Id < 1)
             {
-                throw new ArgumentException(nameof(newProducts));
+                throw new InvalidIdException($"Id {newProduct.Id} is invalid");
             }
 
-            var product = await _unitOfWork.Products.GetByIdAsync(newProducts.Id, cancellationToken);
+            var product = await _unitOfWork.Products.GetByIdAsync(newProduct.Id, cancellationToken);
 
             if (product == null)
             {
-                throw new InvalidOperationException($"Product {newProducts.Id} not found");
+                throw new ObjectNotFoundException($"Product {newProduct.Id} not found");
             }
 
-            var patchDtos = new List<Patch> {
+            var patchDto = new List<Patch> {
 
-                new Patch { PropertyName = "Name", PropertyValue = newProducts.Name },
-                new Patch { PropertyName = "Description", PropertyValue = newProducts.Description},
-                new Patch { PropertyName = "Price", PropertyValue = newProducts.Price }
+                new Patch { PropertyName = "Name", PropertyValue = newProduct.Name },
+                new Patch { PropertyName = "Description", PropertyValue = newProduct.Description},
+                new Patch { PropertyName = "Price", PropertyValue = newProduct.Price }
             };
 
-            await _unitOfWork.Products.PatchAsync(newProducts.Id, patchDtos, cancellationToken);
+            await _unitOfWork.Products.PatchAsync(newProduct.Id, patchDto, cancellationToken);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
@@ -118,33 +115,35 @@ namespace OnlineStore.BusinessLogic.Services
             , CancellationToken cancellationToken)
         {
             var products = await _unitOfWork.Products
-                .GetProductsByPageAsync(paginationDto.Page, paginationDto.PageSize, cancellationToken); 
+                .GetProductsByPageAsync(paginationDto.Page, paginationDto.PageSize, cancellationToken);
 
             var productsDtoList = _mapper.Map<List<ProductDto>>(products);
 
             return productsDtoList;
         }
 
-        public async Task<IEnumerable<ProductDto>?> GetProductsByCategoryAsync(Int32 categoryId
+        public async Task<IEnumerable<ProductDto>?> GetProductsByCategoryAsync(int categoryId
             , CancellationToken cancellationToken)
         {
-
-            if (categoryId >= 1)
+            if (categoryId < 1)
             {
-                var category = await _categoryService.GetCategoryByIdAsync(categoryId, cancellationToken);
-
-                if (category != null)
-                {
-                    var products = await _unitOfWork.Products
-                        .GetProductsByCategoryIdAsync(categoryId, cancellationToken);
-
-                    var productsDto = _mapper.Map<List<ProductDto>>(products);
-
-                    return productsDto;
-                }
+                throw new InvalidIdException($"Id {categoryId} is invalid");
             }
 
-            return null;
+            var category = await _categoryService.GetCategoryByIdAsync(categoryId, cancellationToken);
+
+            if (category == null)
+            {
+                throw new ObjectNotFoundException($"Category {categoryId} not found");
+            }
+
+
+            var products = await _unitOfWork.Products
+                .GetProductsByCategoryIdAsync(categoryId, cancellationToken);
+
+            var productsDto = _mapper.Map<List<ProductDto>>(products);
+
+            return productsDto;
         }
     }
 }
