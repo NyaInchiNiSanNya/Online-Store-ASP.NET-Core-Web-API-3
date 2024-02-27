@@ -1,0 +1,11 @@
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.DTO\bin\Debug\net6.0\OnlineStore.DTO.deps.json
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.DTO\bin\Debug\net6.0\OnlineStore.DTO.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.DTO\bin\Debug\net6.0\OnlineStore.DTO.pdb
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.DTO\obj\Debug\net6.0\OnlineStore.DTO.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.DTO\obj\Debug\net6.0\OnlineStore.DTO.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.DTO\obj\Debug\net6.0\OnlineStore.DTO.AssemblyInfo.cs
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.DTO\obj\Debug\net6.0\OnlineStore.DTO.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.DTO\obj\Debug\net6.0\OnlineStore.DTO.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.DTO\obj\Debug\net6.0\refint\OnlineStore.DTO.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.DTO\obj\Debug\net6.0\OnlineStore.DTO.pdb
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.DTO\obj\Debug\net6.0\ref\OnlineStore.DTO.dll

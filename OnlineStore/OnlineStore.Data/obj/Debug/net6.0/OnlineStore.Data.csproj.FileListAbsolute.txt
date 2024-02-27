@@ -1,0 +1,17 @@
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\bin\Debug\net6.0\OnlineStore.Data.deps.json
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\bin\Debug\net6.0\OnlineStore.Data.runtimeconfig.json
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\bin\Debug\net6.0\OnlineStore.Data.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\bin\Debug\net6.0\OnlineStore.Data.pdb
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\obj\Debug\net6.0\OnlineStore.Data.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\obj\Debug\net6.0\OnlineStore.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\obj\Debug\net6.0\OnlineStore.Data.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\obj\Debug\net6.0\OnlineStore.Data.AssemblyInfo.cs
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\obj\Debug\net6.0\OnlineStore.Data.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\obj\Debug\net6.0\OnlineStore.Data.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\obj\Debug\net6.0\refint\OnlineStore.Data.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\obj\Debug\net6.0\OnlineStore.Data.pdb
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\obj\Debug\net6.0\OnlineStore.Data.genruntimeconfig.cache
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\obj\Debug\net6.0\ref\OnlineStore.Data.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\bin\Debug\net6.0\OnlineStore.DTO.dll
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\bin\Debug\net6.0\OnlineStore.DTO.pdb
+C:\Users\User\Desktop\Online-Store-ASP.NET-Core-Web-API-3\OnlineStore\OnlineStore.Data\obj\Debug\net6.0\OnlineStore.Data.csproj.CopyComplete

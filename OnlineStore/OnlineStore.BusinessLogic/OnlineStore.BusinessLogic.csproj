@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -8,15 +8,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OnlineStore.Data\OnlineStore.Data.csproj" />
+    <ProjectReference Include="..\OnlineStore.DTO\OnlineStore.DTO.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="MappingProfiles\" />
-    <Folder Include="Validators\" />
-    <Folder Include="Services\" />
+    <PackageReference Include="AutoMapper" Version="13.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
   </ItemGroup>
 
 </Project>
