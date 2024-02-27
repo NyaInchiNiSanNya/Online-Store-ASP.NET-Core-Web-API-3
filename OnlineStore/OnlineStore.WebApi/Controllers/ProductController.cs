@@ -24,19 +24,19 @@ namespace OnlineStore.WebApi.Controllers
             await _productService
                     .UpdateProductAsync(productDto, CancellationToken.None);
 
-            return Ok();
+            return Ok(NoContent());
         }
 
         //[Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct([FromRoute] int id)
         {
 
             await _productService
                 .DeleteProductByIdAsync(id, CancellationToken.None);
 
 
-            return Ok();
+            return Ok(NoContent());
         }
 
         //[Authorize(Roles = "Admin")]
@@ -46,11 +46,11 @@ namespace OnlineStore.WebApi.Controllers
             await _productService
                     .CreateNewProductAsync(productDto, CancellationToken.None);
 
-            return Ok();
+            return Ok(NoContent());
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetSelectedProduct(int id)
+        public async Task<IActionResult> GetSelectedProduct([FromRoute] int id)
         {
             var categoryDto = await _productService
             .GetProductByIdAsync(id, CancellationToken.None);

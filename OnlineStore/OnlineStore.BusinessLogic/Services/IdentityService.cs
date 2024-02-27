@@ -48,7 +48,7 @@ namespace OnlineStore.BusinessLogic.Services
             throw new BadRegistrationException(String.Join(", ", errors));
         }
 
-        public async Task LoginAsync(UserLoginDto userLogin, CancellationToken cancellationToken)
+        private async Task LoginAsync(UserLoginDto userLogin, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(userLogin.Email);
 
@@ -63,7 +63,7 @@ namespace OnlineStore.BusinessLogic.Services
             }
         }
 
-        public async Task<List<Claim>> GetUserClaimsAsync(String email, CancellationToken cancellationToken)
+        private async Task<List<Claim>> GetUserClaimsAsync(String email, CancellationToken cancellationToken)
         {
             if (String.IsNullOrEmpty(email))
             {

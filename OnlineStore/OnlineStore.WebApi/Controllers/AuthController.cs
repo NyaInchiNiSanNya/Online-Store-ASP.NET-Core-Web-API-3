@@ -26,7 +26,7 @@ namespace OnlineStore.WebApi.Controllers
             await _identityService
                         .RegistrationAsync(registrationDto, CancellationToken.None);
 
-            return Ok();
+            return Ok(NoContent());
         }
 
         [HttpPost]

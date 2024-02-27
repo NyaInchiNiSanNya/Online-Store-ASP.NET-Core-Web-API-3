@@ -24,7 +24,7 @@ namespace OnlineStore.BusinessLogic.Services
 
         }
 
-        public async Task<ProductDto?> GetProductByIdAsync(Int32 productId, CancellationToken cancellationToken)
+        public async Task<ProductDto?> GetProductByIdAsync(int productId, CancellationToken cancellationToken)
         {
             if (productId < 1)
             {
@@ -41,7 +41,7 @@ namespace OnlineStore.BusinessLogic.Services
             return _mapper.Map<ProductDto>(product);
         }
 
-        public async Task DeleteProductByIdAsync(Int32 productId, CancellationToken cancellationToken)
+        public async Task DeleteProductByIdAsync(int productId, CancellationToken cancellationToken)
         {
             if (productId < 1)
             {
@@ -111,15 +111,23 @@ namespace OnlineStore.BusinessLogic.Services
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<ProductDto>?> GetProductsByPageAsync(ProductsPaginationDto paginationDto
+        public async Task<ProductsDto> GetProductsByPageAsync(ProductsPaginationDto paginationDto
             , CancellationToken cancellationToken)
         {
             var products = await _unitOfWork.Products
                 .GetProductsByPageAsync(paginationDto.Page, paginationDto.PageSize, cancellationToken);
-
+            
             var productsDtoList = _mapper.Map<List<ProductDto>>(products);
+            
+            var totalProductsCount = await _unitOfWork.Products.CountAsync(cancellationToken);
 
-            return productsDtoList;
+            var productsDto = new ProductsDto()
+            {
+                Products = productsDtoList,
+                TotalProductsCount = totalProductsCount
+            };
+
+            return productsDto;
         }
 
         public async Task<IEnumerable<ProductDto>?> GetProductsByCategoryAsync(int categoryId

@@ -27,7 +27,7 @@ namespace OnlineStore.WebApi.Controllers
         }
 
         [HttpGet("{categoryId:int}")]
-        public async Task<IActionResult> GetProductsByCategory(int categoryId)
+        public async Task<IActionResult> GetProductsByCategory([FromRoute] int categoryId)
         {
             var productsByCategory = await _productService
                 .GetProductsByCategoryAsync(categoryId, CancellationToken.None);

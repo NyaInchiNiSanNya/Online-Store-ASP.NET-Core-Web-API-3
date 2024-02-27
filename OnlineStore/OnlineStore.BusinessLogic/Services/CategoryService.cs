@@ -21,7 +21,7 @@ namespace OnlineStore.BusinessLogic.Services
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<CategoryDto?> GetCategoryByIdAsync(Int32 categoryId, CancellationToken cancellationToken)
+        public async Task<CategoryDto?> GetCategoryByIdAsync(int categoryId, CancellationToken cancellationToken)
         {
             if (categoryId < 1)
             {
@@ -38,7 +38,7 @@ namespace OnlineStore.BusinessLogic.Services
             return _mapper.Map<CategoryDto>(category);
         }
 
-        public async Task DeleteCategoryByIdAsync(Int32 categoryId, CancellationToken cancellationToken)
+        public async Task DeleteCategoryByIdAsync(int categoryId, CancellationToken cancellationToken)
         {
             if (categoryId < 1)
             {

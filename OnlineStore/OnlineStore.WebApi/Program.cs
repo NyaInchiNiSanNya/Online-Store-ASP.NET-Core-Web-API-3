@@ -21,7 +21,16 @@ namespace OnlineStore.WebApi
             builder.Services.AddRepositories();
             builder.Services.AddServices();
             builder.Services.AddFluentValidationAutoValidation();
-            
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
             var app = builder.Build();
 
 
@@ -30,7 +39,7 @@ namespace OnlineStore.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseCors();
             app.UseHttpsRedirection();
 
             app.UseAuthentication();

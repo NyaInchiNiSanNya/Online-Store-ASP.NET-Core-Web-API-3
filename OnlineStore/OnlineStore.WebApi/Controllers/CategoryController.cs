@@ -24,17 +24,17 @@ namespace OnlineStore.WebApi.Controllers
             await _categoryService
                     .UpdateCategoryAsync(categoryDto, CancellationToken.None);
 
-            return Ok();
+            return Ok(NoContent());
         }
 
         //[Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategory([FromRoute] int id)
         {
             await _categoryService
                     .DeleteCategoryByIdAsync(id, CancellationToken.None);
 
-            return Ok();
+            return Ok(NoContent());
 
         }
 
@@ -45,11 +45,11 @@ namespace OnlineStore.WebApi.Controllers
             await _categoryService
                     .CreateNewCategoryAsync(categoryDto, CancellationToken.None);
                 
-            return Ok();
+            return Ok(NoContent());
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetSelectedCategory(int id)
+        public async Task<IActionResult> GetSelectedCategory([FromRoute] int id)
         {
             var categoryDto = await _categoryService
                     .GetCategoryByIdAsync(id, CancellationToken.None);

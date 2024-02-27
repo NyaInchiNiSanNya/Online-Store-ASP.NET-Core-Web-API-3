@@ -12,6 +12,7 @@ namespace OnlineStore.DTO.DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
+        public string? PictureLink { get; set; }
         public decimal Price { get; set; }
         public ICollection<int>? CategoriesId { get; set; }
 
