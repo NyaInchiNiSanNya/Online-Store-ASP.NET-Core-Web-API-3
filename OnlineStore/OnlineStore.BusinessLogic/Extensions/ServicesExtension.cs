@@ -18,10 +18,13 @@ namespace OnlineStore.BusinessLogic.Extensions
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             
             services.AddValidatorsFromAssemblyContaining<UserLoginDtoValidator>();
+
+            services.AddHttpContextAccessor();
 
             return services;
         }
