@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace OnlineStore.DTO.DTO
 {
-    public class CategoriesPaginationDto
+    public class OrdersDto
     {
-        public int Page { get; set; }
-
-        public int PageSize { get; set; }
+        public List<OrderDto>? Orders { get; set; }
+        public int TotalOrdersCount { get; set; }
     }
 }

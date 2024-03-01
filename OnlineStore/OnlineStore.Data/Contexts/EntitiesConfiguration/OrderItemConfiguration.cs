@@ -13,7 +13,7 @@ namespace OnlineStore.Data.Contexts.EntitiesConfiguration
             builder
                 .HasOne(x => x.Product)
                 .WithMany()
-                .HasForeignKey(x => x.Id);
+                .HasForeignKey(x => x.ProductId);
         }
     }
 }

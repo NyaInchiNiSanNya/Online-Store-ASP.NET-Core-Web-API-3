@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OnlineStore.Data.Contexts;
@@ -11,9 +12,11 @@ using OnlineStore.Data.Contexts;
 namespace OnlineStore.Data.Migrations
 {
     [DbContext(typeof(ProductsOrdersContext))]
-    partial class ProductsOrdersContextModelSnapshot : ModelSnapshot
+    [Migration("20240228055527_foreignKeyFix")]
+    partial class foreignKeyFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,10 +150,7 @@ namespace OnlineStore.Data.Migrations
             modelBuilder.Entity("OnlineStore.Data.Entities.OrderItem", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Count")
                         .HasColumnType("integer");
@@ -164,8 +164,6 @@ namespace OnlineStore.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems", "pub");
                 });
@@ -388,15 +386,15 @@ namespace OnlineStore.Data.Migrations
 
             modelBuilder.Entity("OnlineStore.Data.Entities.OrderItem", b =>
                 {
-                    b.HasOne("OnlineStore.Data.Entities.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
+                    b.HasOne("OnlineStore.Data.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnlineStore.Data.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
+                    b.HasOne("OnlineStore.Data.Entities.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

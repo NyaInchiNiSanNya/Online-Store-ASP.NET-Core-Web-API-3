@@ -17,12 +17,12 @@ namespace OnlineStore.WebApi.Controllers
                               ?? throw new NullReferenceException(nameof(productService));
         }
         [HttpGet]
-        public async Task<IActionResult> GetProductsByPage([FromQuery] ProductsPaginationDto productsByPageDto)
+        public async Task<IActionResult> GetProductsByPage([FromQuery] PaginationDto byPageDto)
         {
-            var productsList = await _productService
-                .GetProductsByPageAsync(productsByPageDto, CancellationToken.None);
+            var productsDto = await _productService
+                .GetProductsByPageAsync(byPageDto, CancellationToken.None);
 
-            return Ok(productsList);
+            return Ok(productsDto);
 
         }
 

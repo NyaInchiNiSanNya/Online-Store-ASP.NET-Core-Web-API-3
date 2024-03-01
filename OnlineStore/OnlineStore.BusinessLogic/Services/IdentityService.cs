@@ -4,6 +4,7 @@ using OnlineStore.DTO.DTO;
 using Microsoft.AspNetCore.Identity;
 using OnlineStore.Data.Entities;
 using OnlineStore.BusinessLogic.Excpetions;
+using Microsoft.AspNetCore.Http;
 
 namespace OnlineStore.BusinessLogic.Services
 {
@@ -13,12 +14,16 @@ namespace OnlineStore.BusinessLogic.Services
         private readonly UserManager<User> _userManager;
         private readonly IRoleService _roleService;
         private readonly IJwtService _jwtService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IdentityService(UserManager<User> userManager, IRoleService roleService, IJwtService jwtService)
+        public IdentityService(UserManager<User> userManager, 
+            IRoleService roleService, IJwtService jwtService, 
+            IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
             _jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
 
@@ -103,6 +108,25 @@ namespace OnlineStore.BusinessLogic.Services
                 .GetJwtTokenStringAsync(claims, CancellationToken.None);
 
             return jwtToken;
+        }
+
+        public async Task<int> GetUserIdByNameAsync(CancellationToken cancellationToken)
+        {
+            var userName = _httpContextAccessor.HttpContext?.User.Identity!.Name;
+            
+            if (String.IsNullOrEmpty(userName))
+            {
+                throw new UnauthorizedException("User unauthorized");
+            }
+
+            var user = await _userManager.FindByNameAsync(userName);
+
+            if (user == null)
+            {
+                throw new UnauthorizedException("User unauthorized");
+            }
+
+            return user.Id;
         }
     }
 }

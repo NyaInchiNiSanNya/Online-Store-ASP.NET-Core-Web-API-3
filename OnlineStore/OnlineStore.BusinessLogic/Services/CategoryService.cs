@@ -101,7 +101,7 @@ namespace OnlineStore.BusinessLogic.Services
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<CategoryDto>?> GetCategoriesByPageAsync(CategoriesPaginationDto paginationDto
+        public async Task<CategoriesDto?> GetCategoriesByPageAsync(PaginationDto paginationDto
             , CancellationToken cancellationToken)
         {
             var categories = await _unitOfWork.Categories
@@ -109,7 +109,15 @@ namespace OnlineStore.BusinessLogic.Services
 
             var categoriesDtoList = _mapper.Map<List<CategoryDto>>(categories);
 
-            return categoriesDtoList;
+            var totalCategoriesCount = await _unitOfWork.Categories.CountAsync(cancellationToken);
+
+            var categoriesDto = new CategoriesDto()
+            {
+                Categories = categoriesDtoList,
+                TotalCategoriesCount = totalCategoriesCount
+            };
+
+            return categoriesDto;
         }
     }
 }

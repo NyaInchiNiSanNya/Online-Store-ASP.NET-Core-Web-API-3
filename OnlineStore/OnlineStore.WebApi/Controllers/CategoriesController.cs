@@ -18,12 +18,12 @@ namespace OnlineStore.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCategoriesByPage([FromQuery] CategoriesPaginationDto paginationDto)
+        public async Task<IActionResult> GetCategoriesByPage([FromQuery] PaginationDto paginationDto)
         {
-            var categoriesList = await _categoryService
+            var categoriesDto = await _categoryService
                 .GetCategoriesByPageAsync(paginationDto, CancellationToken.None);
 
-            return Ok(categoriesList);
+            return Ok(categoriesDto);
         }
     }
 }

@@ -13,13 +13,13 @@ namespace OnlineStore.Data.Contexts.EntitiesConfiguration
             builder
                 .HasMany(x => x.OrderItems)
                 .WithOne(x => x.Order)
-                .HasForeignKey(x => x.Id)
+                .HasForeignKey(x => x.OrderId)
                 .IsRequired();
 
             builder
                 .HasOne(x => x.User)
                 .WithMany(x => x.Orders)
-                .HasForeignKey(x => x.Id)
+                .HasForeignKey(x => x.UserId)
                 .IsRequired();
         }
     }

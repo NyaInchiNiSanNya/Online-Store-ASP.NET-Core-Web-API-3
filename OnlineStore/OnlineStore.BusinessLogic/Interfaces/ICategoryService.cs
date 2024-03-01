@@ -12,7 +12,7 @@ namespace OnlineStore.BusinessLogic.Interfaces
 
         public Task UpdateCategoryAsync(CategoryDto newCategory, CancellationToken cancellationToken);
 
-        public Task<IEnumerable<CategoryDto>?> GetCategoriesByPageAsync(CategoriesPaginationDto categoriesPagination
+        public Task<CategoriesDto?> GetCategoriesByPageAsync(PaginationDto categoriesPagination
             , CancellationToken cancellationToken);
     }
 }

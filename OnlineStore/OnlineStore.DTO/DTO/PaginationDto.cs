@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OnlineStore.DTO.DTO
 {
-    public class ProductsPaginationDto
+    public class PaginationDto
     {
         public int Page { get; set; }
 

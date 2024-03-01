@@ -12,9 +12,12 @@ namespace OnlineStore.BusinessLogic.Interfaces
 
         public Task UpdateProductAsync(ProductDto newProduct, CancellationToken cancellationToken);
 
-        public Task<ProductsDto> GetProductsByPageAsync(ProductsPaginationDto productsPagination
+        public Task<ProductsDto> GetProductsByPageAsync(PaginationDto pagination
             , CancellationToken cancellationToken);
 
         public Task<IEnumerable<ProductDto>?> GetProductsByCategoryAsync(int categoryId, CancellationToken cancellationToken);
+
+        public Task<bool> DoesProductExistByIdAsync(int productId, CancellationToken cancellationToken);
+        
     }
 }

@@ -38,6 +38,9 @@ namespace OnlineStore.WebApi.Filters.Errors
                     case ObjectAlreadyExistException:
                         context.Response.StatusCode = 400;
                         break;
+                    case UnauthorizedException:
+                        context.Response.StatusCode = 401;
+                        break;
                     default:
                         context.Response.StatusCode = 500;
                         break;

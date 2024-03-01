@@ -9,5 +9,7 @@ namespace OnlineStore.BusinessLogic.Interfaces
             (UserRegistrationDto model, CancellationToken cancellationToken);
 
         public Task<String> LoginAndGetJwtTokenAsync(UserLoginDto model, CancellationToken cancellationToken);
+
+        public Task<int> GetUserIdByNameAsync(CancellationToken cancellationToken);
     }
 }
