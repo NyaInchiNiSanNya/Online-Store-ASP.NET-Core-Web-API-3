@@ -111,7 +111,7 @@ namespace OnlineStore.BusinessLogic.Services
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<ProductsDto> GetProductsByPageAsync(ProductsPaginationDto paginationDto
+        public async Task<ProductsDto> GetProductsByPageAsync(PaginationDto paginationDto
             , CancellationToken cancellationToken)
         {
             var products = await _unitOfWork.Products
@@ -128,6 +128,22 @@ namespace OnlineStore.BusinessLogic.Services
             };
 
             return productsDto;
+        }
+
+        public async Task<bool> DoesProductExistByIdAsync(int productId
+            , CancellationToken cancellationToken)
+        {
+            if (productId < 1)
+            {
+                throw new InvalidIdException($"Id {productId} is invalid");
+            }
+
+            if ( await _unitOfWork.Products.GetByIdAsync(productId, cancellationToken) == null)
+            {
+                throw new ObjectNotFoundException($"Product {productId} not found");
+            }
+
+            return true;
         }
 
         public async Task<IEnumerable<ProductDto>?> GetProductsByCategoryAsync(int categoryId
